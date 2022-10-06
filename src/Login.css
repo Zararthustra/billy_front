@@ -1,0 +1,72 @@
+@media (max-width: 500px) {
+  .loginPage h1 {
+    margin: 0;
+  }
+  .loginBubble {
+    width: 14rem;
+  }
+}
+
+.loginPage {
+  background: center / cover no-repeat url("./assets/background.png");
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginBubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 2rem;
+  background-color: #F9B33F20;
+  border-radius: 15px;
+  padding: 2rem 3rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.loginPage h1 {
+  font-size: 7rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(60deg, #be46f6 0%, #be46f6 20%, #3500a6 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 5px;
+}
+
+.inputLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginBubble label {
+  background-color: #B20FCC;
+  border-radius: 5px;
+  color: white;
+  position: relative;
+  width: fit-content;
+  font-family: var(--num-font);
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: .0rem .5rem .2rem;
+  top: .8rem;
+  left: 1rem;
+}
+
+.loginBubble #password,
+.loginBubble #account {
+  height: 3rem;
+  width: 15rem;
+  padding: .7rem 1rem 0;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  outline: none;
+  font-family: var(--num-font);
+  border: 2px solid var(--mauve);
+  background-color: transparent;
+}

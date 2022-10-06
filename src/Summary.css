@@ -1,0 +1,104 @@
+@media (max-width: 700px) {
+  .summaryHead h1 {
+    font-size: 3rem !important;
+  }
+}
+
+.summaryPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.summaryHead {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30vh;
+  background: 50% 40% / cover no-repeat url("./assets/background.png");
+}
+
+.summaryHead h1 {
+  opacity: 100%;
+  font-size: 7rem;
+  background: linear-gradient(60deg, #be46f6 0%, #be46f6 20%, #3500a6 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 5px;
+}
+
+.yearContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.collapseDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  max-width: 40rem;
+  cursor: pointer;
+}
+
+.collapseDiv:hover h3,
+.collapseDiv:hover svg {
+  color: var(--orange);
+  stroke: var(--orange);
+}
+
+.collapseDiv svg {
+  stroke: var(--light-text);
+}
+
+.yearContainer h3 {
+  font-family: var(--num-font);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--light-text);
+}
+
+
+.monthsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  max-width: 40rem;
+  gap: 1rem;
+}
+
+.monthRow {
+  display: flex;
+  width: 90%;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.monthRow div {
+  width: 100%;
+  text-align: center;
+}
+
+.monthRow:hover {
+  background-color: var(--orange);
+  color: white;
+}
+.monthSolde {
+  font-family: var(--num-font);
+}
+.summaryPage .primaryButton {
+  margin: 3rem 0;
+}

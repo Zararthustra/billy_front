@@ -1,0 +1,220 @@
+@media (max-width: 900px) {
+  .monthHead h1 {
+    font-size: 3rem !important;
+  }
+
+  .monthHead h2 {
+    font-size: 2rem !important;
+  }
+
+  .tableContainer {
+    align-items: flex-start !important;
+    overflow-x: scroll !important;
+  }
+}
+
+.monthPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 5rem;
+}
+
+.monthHead {
+  background: 50% 40% / cover no-repeat url("./assets/background.png");
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.monthHead h1 {
+  margin: 0;
+  font-size: 7rem;
+  background: linear-gradient(60deg, #be46f6 0%, #be46f6 20%, #3500a6 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 5px;
+}
+
+.monthHead h2 {
+  margin: 0;
+  font-family: var(--num-font);
+  font-size: 3rem;
+  color: white;
+}
+
+.tableContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* -------------------------------------------------------- */
+
+/*
+ * Table
+ */
+
+.monthPage table {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.monthPage th:hover {
+  background-color: #fff4fc;
+}
+
+.monthPage th.desc {
+  border-bottom: 5px solid var(--mauve);
+}
+
+.monthPage th.asc {
+  border-top: 5px solid var(--orange);
+}
+
+/* row */
+.monthPage table tbody tr {
+  cursor: pointer;
+}
+
+/* 
+.monthPage table tbody tr:nth-child(odd) {
+  background-color: #fff4fc;
+} */
+
+.monthPage table td:nth-child(4) {
+  background-color: var(--orange);
+  color: white;
+}
+
+.monthPage table td:nth-child(3),
+.monthPage table td:first-child,
+.monthPage table td:nth-child(4) {
+  font-family: var(--num-font);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.monthPage table tbody tr:hover {
+  background-color: var(--orange);
+  color: white !important;
+}
+
+/* head */
+.monthPage table th {
+  padding: 1rem;
+  font-size: 1.2rem;
+  text-align: center;
+  /* min-width: 5rem; */
+}
+
+/* cell */
+.monthPage table td {
+  padding: 1rem 2rem;
+}
+
+/* -------------------------------------------------------- */
+
+/* 
+ * Create a custom checkbox
+ */
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.monthPage input[type="checkbox"] {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.monthPage .check {
+  display: flex;
+  height: 1.2em;
+  width: 1.2em;
+  background: #fff;
+  border-radius: 4px;
+  border: 2px var(--orange) solid;
+}
+
+.monthPage .check--active {
+  background: var(--orange);
+}
+
+.monthPage .check:hover {
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------- */
+
+.addRowContainer {
+  margin-top: 2rem;
+  padding: .5rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.addRowContainer .inputPrice {
+  width: 8ch;
+  height: 2rem;
+  padding-left: 1rem;
+  font-size: 1rem;
+  font-family: var(--num-text);
+}
+
+.selectCredOrDeb {
+  display: flex;
+  gap: .3rem;
+}
+
+.selectCredOrDeb div {
+  cursor: pointer;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 2px;
+}
+
+.selectCredOrDeb .cred {
+  background-color: var(--green);
+}
+
+.selectCredOrDeb .cred:hover {
+  background-color: #1DC60180;
+}
+
+.selectCredOrDeb .deb {
+  background-color: var(--red);
+}
+
+.selectCredOrDeb .deb:hover {
+  background-color: #E66C6C80;
+}
+
+.isActive {
+  border: 1px solid black;
+}
+
+.addRowContainer .primaryButton {
+  margin: 0 0 0 3rem;
+  font-size: .9rem;
+}
+
+/* -------------------------------------------------------- */

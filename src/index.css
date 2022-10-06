@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Jura:wght@400;700&display=swap');
+
+:root {
+  --light-text: #afafafc7;
+  --dark-text: #2c2c2c;
+
+  --orange: #F9B33F;
+  --mauve: #B20FCC;
+
+  --red: #E66C6C;
+  --green: #1DC601;
+
+  --text-font: 'Julius Sans One', sans-serif;
+  --num-font: 'Jura', sans-serif;
+  font-family: var(--text-font);
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #F9B33F95;
+}
+
+::selection {
+  background-color: var(--orange);
+  color: white;
+}
+
+/*------------------------------------*/
+
+.primaryButton {
+  margin-top: 2rem;
+  padding: 0 2rem;
+  width: fit-content;
+  height: 3rem;
+  background-color: var(--mauve);
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  color: white;
+  font-family: var(--text-font);
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 2px;
+}
+
+.primaryButton:hover {
+  background-color: #9d10b3;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  border: none;
+  color: var(--mauve);
+  font-family: var(--text-font);
+  font-size: 1.2rem;
+  cursor: pointer;
+  letter-spacing: 2px;
+}
+
+.secondaryButton:hover {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/*------------------------------------*/
+
+.homeButton {
+  position: fixed;
+  left: 2rem;
+  top: 1rem;
+  cursor: pointer;
+  fill: var(--mauve);
+}
+
+.homeButton:hover {
+  fill: #9d10b3;
+}
+
+.logoutButton {
+  position: fixed;
+  right: 2rem;
+  top: 1rem;
+  cursor: pointer;
+  fill: var(--red);
+  z-index: 1;
+}
+
+.logoutButton:hover {
+  fill: red;
+}
+
+/*------------------------------------*/
+
+/* 404 */
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 3rem;
+  height: 100vh;
+  width: 100%;
+  font-weight: 600;
+  overflow-x: hidden;
+  background: center / cover no-repeat url("./assets/background.png");
+}
+
+.notFound img {
+  width: auto;
+}
+
+/*------------------------------------*/

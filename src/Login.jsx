@@ -26,7 +26,7 @@ export const Login = ({ setIsAuth }) => {
     saveLocalStorage("account", account);
     saveLocalStorage("password", password);
     setIsAuth(true);
-    navigate('/')
+    navigate('/accueil')
   };
 
   //___________________________________________________ Render

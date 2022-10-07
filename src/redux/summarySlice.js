@@ -22,7 +22,15 @@ export const summarySlice = createSlice({
         state.at(-1).solds = [...state.at(-1).solds, action.payload.sold];
       }
     },
+    updateSold: (state, action) => {
+      const payload = action.payload;
+      const yearIndex = state.findIndex((item) => item.year === payload.year);
+      const monthIndex = state[yearIndex].months.findIndex(
+        (item) => item === payload.month
+      );
+      state[yearIndex].solds[monthIndex] = payload.sold;
+    },
   },
 });
 
-export const { addMonth } = summarySlice.actions;
+export const { addMonth, updateSold } = summarySlice.actions;

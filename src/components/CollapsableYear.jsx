@@ -11,7 +11,7 @@ export const CollapsableYear = ({ months, year, sold }) => {
   //___________________________________________________ Functions
   const goMonth = (month, solde) => {
     saveLocalStorage("solde", solde);
-    navigate(`${year}/${month}`);
+    navigate(`/${year}/${month}`);
   };
   //___________________________________________________ Render
 

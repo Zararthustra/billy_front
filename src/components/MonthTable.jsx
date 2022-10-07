@@ -1,16 +1,26 @@
 import { useTable, useSortBy } from "react-table";
 import useColumns from "../hooks/useColumns";
 import { useEffect } from "react";
-import { getLocalStorage } from "../utils/localStorage";
+import { useSelector } from "react-redux";
+import { getSold } from "../utils/getSold";
+import { getMonth } from "../utils/getMonth";
 
-export const MonthTable = ({ lastMonth, setMonthSold, movements }) => {
+export const MonthTable = ({
+  month,
+  year,
+  lastMonth,
+  setMonthSold,
+  movements,
+}) => {
   //___________________________________________________ Variables
 
   const data = movements; //useSelector((state) => state.movements);
 
   const columns = useColumns();
+  const getSummary = useSelector((state) => state.summary);
+  let yearOfLastMonth = lastMonth === 12 ? year - 1 : year
+  let incrementedSoldes = getSold(yearOfLastMonth, lastMonth, getSummary) || 0;
 
-  let incrementedSoldes = getLocalStorage("solde") || 0;
   let catchValue = 0;
 
   useEffect(() => {
@@ -53,9 +63,9 @@ export const MonthTable = ({ lastMonth, setMonthSold, movements }) => {
           <td></td>
           <td></td>
           <td>
-            {lastMonth}
+            {getMonth(lastMonth)}
             <br />
-            {getLocalStorage("solde") || 0} €
+            {getSold(yearOfLastMonth, lastMonth, getSummary) || 0} €
           </td>
           <td></td>
         </tr>

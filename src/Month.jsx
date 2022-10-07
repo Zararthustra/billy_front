@@ -7,6 +7,8 @@ import { MonthTable } from "./components/MonthTable";
 import { AddRow } from "./components/AddRow";
 import { useDispatch, useSelector } from "react-redux";
 import { addRows } from "./redux/movementSlice";
+import { updateSold } from "./redux/summarySlice";
+import { getSold } from "./utils/getSold";
 
 export const Month = () => {
   //___________________________________________________ Variables
@@ -17,8 +19,7 @@ export const Month = () => {
   const monthParam = parseInt(useParams().month);
   const yearParam = parseInt(useParams().year);
   const month = getMonth(monthParam) || false;
-  const lastMonth = getMonth(monthParam - 1) || false;
-  const [monthSold, setMonthSold] = useState(0);
+  const [monthSold, setMonthSold] = useState(getSold(yearParam, monthParam, getSummary) || 0);
   const [movements, setMovements] = useState(
     useSelector((state) => state.movements).filter(
       (item) => item.year === yearParam && item.month === monthParam
@@ -34,15 +35,17 @@ export const Month = () => {
     .includes(yearParam);
 
   useEffect(() => {
-    if (!correctMonthParam || !correctYearParam) return navigate("/");
+    if (!correctMonthParam || !correctYearParam) return navigate("/accueil");
   }, [navigate, correctMonthParam, correctYearParam, monthSold]);
 
   //___________________________________________________ Functions
 
   const saveMonth = () => {
-    console.log(movements, "1");
     dispatch(addRows(newRows));
-    console.log(movements, "2");
+    console.log(monthSold);
+    dispatch(
+      updateSold({ year: yearParam, month: monthParam, sold: monthSold })
+    );
     console.log("month saved");
   };
 
@@ -57,7 +60,9 @@ export const Month = () => {
       </div>
       <div className="tableContainer">
         <MonthTable
-          lastMonth={lastMonth}
+          month={parseInt(monthParam)}
+          year={parseInt(yearParam)}
+          lastMonth={monthParam - 1 === 0 ? 12 : monthParam - 1}
           setMonthSold={setMonthSold}
           movements={movements}
         />

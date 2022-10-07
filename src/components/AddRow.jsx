@@ -217,7 +217,7 @@ export const AddRow = ({
         name="price"
         min="0"
         id="price"
-        placeholder="............ €"
+        placeholder="......................  €"
         value={value}
         onChange={handleValue}
       />

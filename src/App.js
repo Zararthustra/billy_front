@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<Summary />} />
+          <Route path="/accueil" element={<Summary />} />
           <Route path="/:year/:month" element={<Month />} />
         </Route>
           <Route path="*" element={<NotFound />} />

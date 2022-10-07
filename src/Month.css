@@ -50,6 +50,7 @@
 
 .tableContainer {
   width: 100%;
+  margin: 2rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -64,8 +65,9 @@
  */
 
 .monthPage table {
-  white-space: nowrap;
+  /* white-space: nowrap; */
   text-align: center;
+  padding-bottom: 4rem;
 }
 
 .monthPage th:hover {
@@ -81,16 +83,28 @@
 }
 
 /* row */
-.monthPage table tbody tr {
+.monthPage table tbody tr:not(.monthPage table tr:first-child) {
   cursor: pointer;
 }
 
-/* 
-.monthPage table tbody tr:nth-child(odd) {
-  background-color: #fff4fc;
-} */
+.monthPage table tbody tr:hover:not(.monthPage table tr:first-child) {
+  background-color: var(--orange);
+  color: white !important;
+}
 
-.monthPage table td:nth-child(4) {
+
+.monthPage table tbody tr:nth-child(even) {
+  background-color: #fff4fc;
+}
+
+.monthPage table tr:first-child td:nth-child(4) {
+  background-color: var(--mauve);
+  color: white;
+  border-radius: 3px;
+}
+
+.monthPage table td:nth-child(4):not(.monthPage table tr:first-child td:nth-child(4)) {
+  border-radius: 3px;
   background-color: var(--orange);
   color: white;
 }
@@ -101,11 +115,6 @@
   font-family: var(--num-font);
   font-weight: 600;
   font-size: 1.2rem;
-}
-
-.monthPage table tbody tr:hover {
-  background-color: var(--orange);
-  color: white !important;
 }
 
 /* head */
@@ -123,66 +132,48 @@
 
 /* -------------------------------------------------------- */
 
-/* 
- * Create a custom checkbox
- */
-.box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2em;
-}
-
-.monthPage input[type="checkbox"] {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.monthPage .check {
-  display: flex;
-  height: 1.2em;
-  width: 1.2em;
-  background: #fff;
-  border-radius: 4px;
-  border: 2px var(--orange) solid;
-}
-
-.monthPage .check--active {
-  background: var(--orange);
-}
-
-.monthPage .check:hover {
-  box-shadow: 1px 1px 8px 1px #dcdcdc;
-  cursor: pointer;
-}
-
-/* -------------------------------------------------------- */
-
 .addRowContainer {
-  margin-top: 2rem;
-  padding: .5rem 0;
+  position: relative;
+  margin: 1rem;
+  padding: 2rem 3rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  border-radius: 15px;
+  border: 2px solid var(--mauve);
+  box-shadow: 0 0 50px #4a005820;
 }
 
 .addRowContainer .inputPrice {
   width: 8ch;
-  height: 2rem;
-  padding-left: 1rem;
+  height: 2.1rem;
   font-size: 1rem;
+  padding-left: .5rem;
   font-family: var(--num-text);
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  color: var(--orange);
+  font-weight: 600;
 }
+/* 
+.addRowContainer .inputPrice:focus-within {
+  border: 1px solid var(--orange);
+} */
 
 .selectCredOrDeb {
   display: flex;
-  gap: .3rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: .7rem;
+  border-radius: 5px;
+  width: 100%;
+}
+.selectCredOrDeb p {
+  color: #9b9999;
+  margin: 0;
 }
 
 .selectCredOrDeb div {
@@ -190,10 +181,14 @@
   height: 2rem;
   width: 2rem;
   border-radius: 2px;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 600;
 }
 
 .selectCredOrDeb .cred {
-  background-color: var(--green);
+  background-color: #1DC60150;
 }
 
 .selectCredOrDeb .cred:hover {
@@ -201,20 +196,32 @@
 }
 
 .selectCredOrDeb .deb {
-  background-color: var(--red);
+  background-color: #E66C6C50;
 }
 
 .selectCredOrDeb .deb:hover {
   background-color: #E66C6C80;
 }
 
-.isActive {
-  border: 1px solid black;
+.deb.isActive {
+  border: 1px solid #222222;
+  background-color: var(--red);
+}
+
+.cred.isActive {
+  border: 1px solid #222222;
+  background-color: var(--green);
 }
 
 .addRowContainer .primaryButton {
+  position: absolute;
+  bottom: -1.5rem;
+  right: 2rem;
   margin: 0 0 0 3rem;
   font-size: .9rem;
 }
 
+.addRowContainer .box {
+  color: #9b9999;
+}
 /* -------------------------------------------------------- */

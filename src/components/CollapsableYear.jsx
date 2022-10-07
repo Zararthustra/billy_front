@@ -6,7 +6,7 @@ import { saveLocalStorage } from "../utils/localStorage";
 export const CollapsableYear = ({ months, year, sold }) => {
   //___________________________________________________ Variables
   const navigate = useNavigate();
-  const [collapse, setCollapse] = useState(true);
+  const [collapse, setCollapse] = useState(new Date().getFullYear() === year ? false : true);
 
   //___________________________________________________ Functions
   const goMonth = (month, solde) => {

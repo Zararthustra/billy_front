@@ -138,3 +138,40 @@ li {
 }
 
 /*------------------------------------*/
+
+/* 
+ * Create a custom checkbox
+ */
+ .box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.check {
+  display: flex;
+  height: 1.2em;
+  width: 1.2em;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px var(--orange) solid;
+}
+
+.check--active {
+  background: var(--orange);
+}
+
+/*.check:hover {
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+} */

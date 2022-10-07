@@ -18,14 +18,14 @@ export const MonthTable = ({
 
   const columns = useColumns();
   const getSummary = useSelector((state) => state.summary);
-  let yearOfLastMonth = lastMonth === 12 ? year - 1 : year
+  let yearOfLastMonth = lastMonth === 12 ? year - 1 : year;
   let incrementedSoldes = getSold(yearOfLastMonth, lastMonth, getSummary) || 0;
 
   let catchValue = 0;
 
   useEffect(() => {
     setMonthSold(incrementedSoldes);
-  }, [setMonthSold, incrementedSoldes]);
+  });
 
   //___________________________________________________ Functions
 
@@ -95,10 +95,9 @@ export const MonthTable = ({
                       );
                     }
                     if (cell.column.id === "solde") {
+                      incrementedSoldes += catchValue;
                       return (
-                        <td {...cell.getCellProps()}>
-                          {(incrementedSoldes += catchValue)}
-                        </td>
+                        <td {...cell.getCellProps()}>{incrementedSoldes}</td>
                       );
                     }
                     if (cell.column.id === "recurrent")

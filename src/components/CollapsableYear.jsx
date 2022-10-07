@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveLocalStorage } from "../utils/localStorage";
 
-export const CollapsableYear = ({ months, year, sold }) => {
+export const CollapsableYear = ({ months, year, solds }) => {
   //___________________________________________________ Variables
   const navigate = useNavigate();
   const [collapse, setCollapse] = useState(new Date().getFullYear() === year ? false : true);
@@ -38,9 +38,9 @@ export const CollapsableYear = ({ months, year, sold }) => {
         <ul className="monthsContainer">
           {months.map((month, idx) => {
             return (
-              <li key={idx} className="monthRow" onClick={() => goMonth(month, sold[idx])}>
+              <li key={idx} className="monthRow" onClick={() => goMonth(month, solds[idx])}>
                 <div>{getMonth(month)}</div>
-                <div className="monthSolde">{sold[idx]} €</div>
+                <div className="monthSolde">{solds[idx]} €</div>
               </li>
             );
           })}

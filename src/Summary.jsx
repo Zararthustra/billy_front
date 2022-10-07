@@ -39,7 +39,7 @@ export const Summary = () => {
             <CollapsableYear
               months={yearObject.months}
               year={yearObject.year}
-              sold={yearObject.solds}
+              solds={yearObject.solds}
             />
           </div>
         );

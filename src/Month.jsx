@@ -19,10 +19,13 @@ export const Month = () => {
   const monthParam = parseInt(useParams().month);
   const yearParam = parseInt(useParams().year);
   const month = getMonth(monthParam) || false;
-  const [monthSold, setMonthSold] = useState(getSold(yearParam, monthParam, getSummary) || 0);
+  const [monthSold, setMonthSold] = useState(
+    getSold(yearParam, monthParam, getSummary) || 0
+  );
   const [movements, setMovements] = useState(
     useSelector((state) => state.movements).filter(
-      (item) => item.year === yearParam && item.month === monthParam
+      (item) =>
+        (item.year === yearParam && item.month === monthParam) || item.recurrent
     )
   );
   const [newRows, setNewRows] = useState([]);
@@ -46,7 +49,7 @@ export const Month = () => {
     dispatch(
       updateSold({ year: yearParam, month: monthParam, sold: monthSold })
     );
-    console.log("month saved");
+    navigate("/accueil");
   };
 
   //___________________________________________________ Render
@@ -58,6 +61,14 @@ export const Month = () => {
         <h1>{month}</h1>
         <h2>{monthSold} €</h2>
       </div>
+      <AddRow
+        month={parseInt(monthParam)}
+        year={parseInt(yearParam)}
+        movements={movements}
+        setMovements={setMovements}
+        newRows={newRows}
+        setNewRows={setNewRows}
+      />
       <div className="tableContainer">
         <MonthTable
           month={parseInt(monthParam)}
@@ -67,14 +78,7 @@ export const Month = () => {
           movements={movements}
         />
       </div>
-      <AddRow
-        month={parseInt(monthParam)}
-        year={parseInt(yearParam)}
-        movements={movements}
-        setMovements={setMovements}
-        newRows={newRows}
-        setNewRows={setNewRows}
-      />
+
       <button className="primaryButton" onClick={saveMonth}>
         Enregistrer
       </button>

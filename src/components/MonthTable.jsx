@@ -14,14 +14,15 @@ export const MonthTable = ({
 }) => {
   //___________________________________________________ Variables
 
-  const data = movements; //useSelector((state) => state.movements);
-
   const columns = useColumns();
   const getSummary = useSelector((state) => state.summary);
+
   let yearOfLastMonth = lastMonth === 12 ? year - 1 : year;
   let incrementedSoldes = getSold(yearOfLastMonth, lastMonth, getSummary) || 0;
 
   let catchValue = 0;
+
+  let data = movements;
 
   useEffect(() => {
     setMonthSold(incrementedSoldes);
@@ -70,7 +71,7 @@ export const MonthTable = ({
           <td></td>
         </tr>
         {
-          // Loop over the table rows filtered by month and year
+          // Loop over the table rows
           rows.map((row) => {
             // Prepare the row for display
             prepareRow(row);

@@ -11,6 +11,13 @@
     align-items: flex-start !important;
     overflow-x: scroll !important;
   }
+
+}
+
+@media (max-width: 600px) {
+  .addRowContainer {
+    padding: 2rem !important;
+  }
 }
 
 .monthPage {
@@ -158,6 +165,7 @@
   color: var(--orange);
   font-weight: 600;
 }
+
 /* 
 .addRowContainer .inputPrice:focus-within {
   border: 1px solid var(--orange);
@@ -171,6 +179,7 @@
   border-radius: 5px;
   width: 100%;
 }
+
 .selectCredOrDeb p {
   color: #9b9999;
   margin: 0;
@@ -225,4 +234,5 @@
 .addRowContainer .box {
   color: #9b9999;
 }
+
 /* -------------------------------------------------------- */

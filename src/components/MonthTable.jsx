@@ -11,6 +11,7 @@ export const MonthTable = ({
   lastMonth,
   setMonthSold,
   movements,
+  setRowToEdit,
 }) => {
   //___________________________________________________ Variables
 
@@ -77,7 +78,10 @@ export const MonthTable = ({
             prepareRow(row);
             return (
               // Apply the row props
-              <tr {...row.getRowProps()}>
+              <tr
+                {...row.getRowProps()}
+                onClick={() => setRowToEdit(row.original)}
+              >
                 {
                   // Loop over the rows cells
                   row.cells.map((cell) => {
@@ -98,7 +102,11 @@ export const MonthTable = ({
                     if (cell.column.id === "solde") {
                       incrementedSoldes += catchValue;
                       return (
-                        <td {...cell.getCellProps()}>{incrementedSoldes}</td>
+                        <td {...cell.getCellProps()}>
+                          {incrementedSoldes % 1 !== 0
+                            ? incrementedSoldes.toFixed(2)
+                            : incrementedSoldes}
+                        </td>
                       );
                     }
                     if (cell.column.id === "recurrent")

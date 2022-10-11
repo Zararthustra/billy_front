@@ -97,6 +97,7 @@ li {
   top: 1rem;
   cursor: pointer;
   fill: var(--mauve);
+  z-index: 1;
 }
 
 .homeButton:hover {

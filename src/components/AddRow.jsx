@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Select from "react-select";
 import { useSelector } from "react-redux";
 import CreatableSelect from "react-select/creatable";
@@ -17,7 +17,7 @@ export const AddRow = ({
   const [lib, setLib] = useState("");
   const [deb, setDeb] = useState(null);
   const [cred, setCred] = useState(null);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(0);
   const [isRec, setIsRec] = useState(false);
   const [libs, setLibs] = useState(
     useSelector((state) => state.movements).map((item) => {
@@ -79,8 +79,6 @@ export const AddRow = ({
     }),
   };
 
-  useEffect(() => {}, [libs]);
-
   //___________________________________________________ Functions
 
   const handleDate = (event) => {
@@ -96,7 +94,7 @@ export const AddRow = ({
   };
 
   const handleValue = (event) => {
-    const val = parseInt(event.target.value);
+    const val = parseFloat(event.target.value);
     if (event.target.value.length > 7) return;
     setValue(val < 0 ? val * -1 : val);
   };
@@ -159,30 +157,50 @@ export const AddRow = ({
 
   return (
     <div className="addRowContainer">
-      <Select
-        ref={dateRef}
-        isSearchable={true}
-        placeholder="Date"
-        styles={selectDateStyle}
-        isClearable={true}
-        className="selectDate"
-        onChange={handleDate}
-        options={[...Array(31).keys()].map((item) => {
-          return { value: item + 1, label: item + 1 };
-        })}
-      />
-      <CreatableSelect
-        ref={libRef}
-        isSearchable={true}
-        placeholder="Libellé"
-        styles={selectLibStyle}
-        isClearable={true}
-        className="selectLib"
-        onCreateOption={handleCreateLib}
-        onChange={handleLib}
-        options={libs}
-        loadingMessage={"defefe"}
-      />
+      <div className="labelWraper">
+        Date
+        <Select
+          ref={dateRef}
+          isSearchable={true}
+          // placeholder="Date"
+          styles={selectDateStyle}
+          isClearable={true}
+          className="selectDate"
+          onChange={handleDate}
+          options={[...Array(31).keys()].map((item) => {
+            return { value: item + 1, label: item + 1 };
+          })}
+        />
+      </div>
+      <div className="labelWraper">
+        Libellé
+        <CreatableSelect
+          ref={libRef}
+          isSearchable={true}
+          // placeholder="Libellé"
+          styles={selectLibStyle}
+          isClearable={true}
+          className="selectLib"
+          onCreateOption={handleCreateLib}
+          onChange={handleLib}
+          options={libs}
+        />
+      </div>
+      <div className="labelWraper">
+        Montant
+        <input
+          className="inputPrice"
+          type="number"
+          name="price"
+          min="0"
+          id="price"
+          step="0.01"
+          placeholder=". . ."
+          value={value}
+          onChange={handleValue}
+          style={{ width: value.toString().length + 2 + "ch" }}
+        />
+      </div>
       <div
         style={{
           display: "flex",
@@ -190,38 +208,46 @@ export const AddRow = ({
           justifyContent: "center",
           alignItems: "center",
           gap: ".2rem",
+          minWidth: "8rem",
         }}
       >
-        <div className="selectCredOrDeb">
-          <p>Débit</p>
-          <div
-            className={`deb ${deb ? "isActive" : ""}`}
-            onClick={() => handleDebOrCred("deb")}
+        <div className="selectCredOrDeb" onClick={() => handleDebOrCred("deb")}>
+          <p
+            style={{
+              fontWeight: deb ? "600" : "",
+              color: deb ? "#000" : "#9b9999",
+              cursor: "pointer",
+            }}
           >
-            -
-          </div>
+            Débit
+          </p>
+          <div className={`deb ${deb ? "isActive" : ""}`}>-</div>
         </div>
-        <div className="selectCredOrDeb">
-          <p>Crédit</p>
-          <div
-            className={`cred ${cred ? "isActive" : ""}`}
-            onClick={() => handleDebOrCred("cred")}
+        <div
+          className="selectCredOrDeb"
+          onClick={() => handleDebOrCred("cred")}
+        >
+          <p
+            style={{
+              fontWeight: cred ? "600" : "",
+              color: cred ? "#000" : "#9b9999",
+              cursor: "pointer",
+            }}
           >
-            +
-          </div>
+            Crédit
+          </p>
+          <div className={`cred ${cred ? "isActive" : ""}`}>+</div>
         </div>
       </div>
-      <input
-        className="inputPrice"
-        type="number"
-        name="price"
-        min="0"
-        id="price"
-        placeholder="......................  €"
-        value={value}
-        onChange={handleValue}
-      />
-      <label className="box">
+
+      <label
+        className="box"
+        style={{
+          fontWeight: isRec ? "600" : "",
+          color: isRec ? "#000" : "#9b9999",
+          minWidth: "8rem",
+        }}
+      >
         Récurrent
         <input type="checkbox" onChange={() => setIsRec(!isRec)} />
         <svg

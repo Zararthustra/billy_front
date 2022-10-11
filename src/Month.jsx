@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addRows } from "./redux/movementSlice";
 import { updateSold } from "./redux/summarySlice";
 import { getSold } from "./utils/getSold";
+import { EditRow } from "./components/EditRow";
 
 export const Month = () => {
   //___________________________________________________ Variables
@@ -19,6 +20,7 @@ export const Month = () => {
   const monthParam = parseInt(useParams().month);
   const yearParam = parseInt(useParams().year);
   const month = getMonth(monthParam) || false;
+  const [rowToEdit, setRowToEdit] = useState(null);
   const [monthSold, setMonthSold] = useState(
     getSold(yearParam, monthParam, getSummary) || 0
   );
@@ -45,7 +47,6 @@ export const Month = () => {
 
   const saveMonth = () => {
     dispatch(addRows(newRows));
-    console.log(monthSold);
     dispatch(
       updateSold({ year: yearParam, month: monthParam, sold: monthSold })
     );
@@ -57,18 +58,30 @@ export const Month = () => {
     <main className="monthPage">
       <Home />
       <Logout />
+      {rowToEdit && (
+        <EditRow
+          month={parseInt(monthParam)}
+          year={parseInt(yearParam)}
+          row={rowToEdit}
+          setRow={setRowToEdit}
+          movements={movements}
+          setMovements={setMovements}
+        />
+      )}
       <div className="monthHead">
         <h1>{month}</h1>
         <h2>{monthSold} €</h2>
       </div>
-      <AddRow
-        month={parseInt(monthParam)}
-        year={parseInt(yearParam)}
-        movements={movements}
-        setMovements={setMovements}
-        newRows={newRows}
-        setNewRows={setNewRows}
-      />
+      {!rowToEdit && (
+        <AddRow
+          month={parseInt(monthParam)}
+          year={parseInt(yearParam)}
+          movements={movements}
+          setMovements={setMovements}
+          newRows={newRows}
+          setNewRows={setNewRows}
+        />
+      )}
       <div className="tableContainer">
         <MonthTable
           month={parseInt(monthParam)}
@@ -76,6 +89,7 @@ export const Month = () => {
           lastMonth={monthParam - 1 === 0 ? 12 : monthParam - 1}
           setMonthSold={setMonthSold}
           movements={movements}
+          setRowToEdit={setRowToEdit}
         />
       </div>
 

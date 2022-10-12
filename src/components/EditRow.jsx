@@ -31,9 +31,6 @@ export const EditRow = ({
     })
   );
 
-  console.log(value);
-  console.log(deb);
-  console.log(cred);
   const selectDateStyle = {
     singleValue: (base, state) => ({
       ...base,

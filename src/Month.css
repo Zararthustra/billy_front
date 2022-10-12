@@ -83,15 +83,18 @@
 }
 
 .monthPage th.desc {
+  position: relative;
   border-bottom: 5px solid var(--mauve);
 }
 
 .monthPage th.asc {
+  position: relative;
   border-top: 5px solid var(--orange);
 }
 
 /* row */
 .monthPage table tbody tr:not(.monthPage table tr:first-child) {
+  transition: all .5s ease;
   cursor: pointer;
 }
 
@@ -129,6 +132,7 @@
   padding: 1rem;
   font-size: 1.2rem;
   text-align: center;
+  transition: all .5s ease;
   /* min-width: 5rem; */
 }
 
@@ -207,6 +211,7 @@
 
 .selectCredOrDeb .cred {
   background-color: #1DC60150;
+  transition: all .5s ease;
 }
 
 .selectCredOrDeb .cred:hover {
@@ -215,6 +220,7 @@
 
 .selectCredOrDeb .deb {
   background-color: #E66C6C50;
+  transition: all .5s ease;
 }
 
 .selectCredOrDeb .deb:hover {

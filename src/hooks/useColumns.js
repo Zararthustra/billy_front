@@ -12,7 +12,7 @@ export default function useColumns() {
         accessor: "lib",
       },
       {
-        Header: "Débit/Crédit",
+        Header: "Montant",
         accessor: "value",
       },
       {

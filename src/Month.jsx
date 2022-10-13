@@ -10,6 +10,7 @@ import { addRows } from "./redux/movementSlice";
 import { updateSold } from "./redux/summarySlice";
 import { getSold } from "./utils/getSold";
 import { EditRow } from "./components/EditRow";
+import { PDFTable } from "./utils/PDFTable";
 
 export const Month = () => {
   //___________________________________________________ Variables
@@ -44,6 +45,24 @@ export const Month = () => {
   }, [navigate, correctMonthParam, correctYearParam, monthSold]);
 
   //___________________________________________________ Functions
+
+  const printTable = () => {
+    let stringHtmlTable = PDFTable(
+      movements,
+      yearParam,
+      monthParam,
+      getSummary
+    );
+    let htmlTable = document.createElement("html");
+    htmlTable.innerHTML = stringHtmlTable;
+    const win = window.open();
+
+    win.document.open();
+    win.document.write(htmlTable.outerHTML);
+    win.document.close();
+    win.print();
+    win.close();
+  };
 
   const saveMonth = () => {
     dispatch(addRows(newRows));
@@ -95,6 +114,9 @@ export const Month = () => {
 
       <button className="primaryButton" onClick={saveMonth}>
         Enregistrer
+      </button>
+      <button className="primaryButton" onClick={printTable}>
+        Imprimer
       </button>
     </main>
   );

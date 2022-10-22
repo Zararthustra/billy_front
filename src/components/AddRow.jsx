@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { createMovements } from "../redux/movementSlice";
 
 export const AddRow = ({
   month,
@@ -8,15 +10,17 @@ export const AddRow = ({
   libsArray,
   newRows,
   setNewRows,
+  isRec,
 }) => {
   //___________________________________________________ Variables
+
+  const dispatch = useDispatch();
 
   const [day, setDay] = useState(null);
   const [lib, setLib] = useState("");
   const [deb, setDeb] = useState(null);
   const [cred, setCred] = useState(null);
   const [value, setValue] = useState("");
-  const [isRec, setIsRec] = useState(false);
   const [libs, setLibs] = useState([]);
   const dateRef = useRef();
   const libRef = useRef();
@@ -128,13 +132,13 @@ export const AddRow = ({
         (item) =>
           item.day === payload.day &&
           item.lib === payload.lib &&
-          item.value === payload.value &&
-          item.recurrent === payload.recurrent
+          item.value === payload.value
       ).length > 0;
 
     if (containsDuplicateRow) return; // add toast error
 
     setNewRows([...newRows, payload]);
+    if (isRec) dispatch(createMovements([payload]));
 
     // Clear inputs
     dateRef.current.clearValue();
@@ -144,7 +148,6 @@ export const AddRow = ({
     setDeb(null);
     setCred(null);
     setValue("");
-    setIsRec(false);
     return;
   };
 
@@ -238,30 +241,6 @@ export const AddRow = ({
           <div className={`cred ${cred ? "isActive" : ""}`}>+</div>
         </div>
       </div>
-
-      <label
-        className="box"
-        style={{
-          fontWeight: isRec ? "600" : "",
-          color: isRec ? "#000" : "#9b9999",
-          minWidth: "8rem",
-        }}
-      >
-        Récurrent
-        <input type="checkbox" onChange={() => setIsRec(!isRec)} />
-        <svg
-          className={`check ${isRec ? "check--active" : ""}`}
-          aria-hidden="true"
-          viewBox="0 0 15 10"
-          fill="none"
-        >
-          <path
-            d="M1 4.5L5 9L14 1"
-            strokeWidth="2"
-            stroke={isRec ? "#fff" : "none"}
-          />
-        </svg>
-      </label>
       <button className="primaryButton" onClick={handleAddRow}>
         Ajouter
       </button>

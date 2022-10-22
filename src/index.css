@@ -68,6 +68,7 @@ li {
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 2px;
+  transition: all .5s;
 }
 
 .primaryButton:hover {
@@ -143,7 +144,7 @@ li {
 /* 
  * Create a custom checkbox
  */
- .box {
+.box {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -173,6 +174,25 @@ input[type="checkbox"] {
   background: var(--orange);
 }
 
-/*.check:hover {
-  box-shadow: 1px 1px 8px 1px #dcdcdc;
-} */
+/*
+ * Récurrences
+ */
+
+.recurrence {
+  transition: all .5s;
+  outline: 2px solid var(--orange);
+}
+
+.recurrence:hover:not(.temporaryDelRow) {
+  box-shadow: 0 0 50px #4a005815;
+  outline: 2px solid var(--mauve);
+}
+
+.recTitles {
+  transition: all .5s;
+  color: var(--orange);
+}
+
+.recurrence:hover:not(.temporaryDelRow) .recTitles {
+  color: var(--mauve);
+}

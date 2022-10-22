@@ -11,6 +11,7 @@
     align-items: flex-start !important;
     overflow-x: scroll !important;
   }
+
   .monthHead svg {
     width: 30px;
   }
@@ -19,6 +20,14 @@
 @media (max-width: 600px) {
   .addRowContainer {
     padding: 2rem !important;
+  }
+
+  .editRowContainer {
+    padding: 2rem !important;
+  }
+
+  .editRowFields {
+    flex-direction: column;
   }
 }
 
@@ -56,6 +65,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .monthHead svg {
   fill: var(--mauve);
   cursor: pointer;
@@ -166,6 +176,7 @@
 .temporaryDelRow {
   cursor: no-drop !important;
   animation: blinkRed 3s ease-in-out infinite;
+  outline: none;
 }
 
 .temporaryAddRow {
@@ -187,6 +198,7 @@
     background-color: none;
   }
 }
+
 @keyframes blinkGreen {
   0% {
     background-color: none;
@@ -207,7 +219,7 @@
 .addRowContainer {
   position: relative;
   margin: 1rem;
-  padding: 1rem 3rem;
+  padding: 2rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -216,6 +228,7 @@
   border-radius: 15px;
   border: 2px solid var(--mauve);
   box-shadow: 0 0 50px #4a005815;
+  z-index: 0;
 }
 
 .labelWraper {
@@ -240,11 +253,6 @@
   font-weight: 600;
 }
 
-/* 
-.addRowContainer .inputPrice:focus-within {
-  border: 1px solid var(--orange);
-} */
-
 .selectCredOrDeb {
   display: flex;
   justify-content: space-between;
@@ -252,7 +260,6 @@
   gap: .7rem;
   border-radius: 5px;
   width: 100%;
-  /* cursor:default; */
 }
 
 .selectCredOrDeb p {
@@ -302,7 +309,6 @@
   position: absolute;
   bottom: -1.5rem;
   right: 2rem;
-  margin: 0 0 0 3rem;
   font-size: .9rem;
   padding: 1rem;
 }
@@ -318,20 +324,23 @@
  */
 
 .editRowPage {
-  position: absolute;
+  position: fixed;
+  top: 0;
   width: 100%;
   height: 100%;
   background-color: #000000be;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .editRowContainer {
   background-color: white;
   width: auto;
-  margin: 1rem;
-  padding: 1rem;
+  height: fit-content;
+  padding: 2rem;
+  margin: 0 1rem;
   display: flex;
   flex-wrap: wrap;
   position: relative;

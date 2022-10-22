@@ -11,7 +11,8 @@ export const EditRow = ({
   setRow,
   deletedRows,
   setDeletedRows,
-  libsArray
+  libsArray,
+  isRec
 }) => {
   //___________________________________________________ Variables
   const dispatch = useDispatch();
@@ -25,7 +26,6 @@ export const EditRow = ({
     row.value ? (row.value > 0 ? true : false) : null
   );
   const [value, setValue] = useState(Math.abs(row.value));
-  const [isRec, setIsRec] = useState(row.rec);
   const [libs, setLibs] = useState(
     libsArray.map((item) => {
       return { value: item, label: item };
@@ -68,6 +68,8 @@ export const EditRow = ({
       ...base,
       cursor: "pointer",
       border: "none",
+      fontFamily: "var(--num-font)",
+      width: "15rem",
       boxShadow: "none",
     }),
     option: (base, state) => ({
@@ -155,6 +157,7 @@ export const EditRow = ({
             x
           </div>
           <div
+          className="editRowFields"
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -248,30 +251,6 @@ export const EditRow = ({
                 <div className={`cred ${cred ? "isActive" : ""}`}>+</div>
               </div>
             </div>
-
-            <label
-              className="box"
-              style={{
-                fontWeight: isRec ? "600" : "",
-                color: isRec ? "#000" : "#9b9999",
-                minWidth: "8rem",
-              }}
-            >
-              Récurrent
-              <input type="checkbox" onChange={() => setIsRec(!isRec)} />
-              <svg
-                className={`check ${isRec ? "check--active" : ""}`}
-                aria-hidden="true"
-                viewBox="0 0 15 10"
-                fill="none"
-              >
-                <path
-                  d="M1 4.5L5 9L14 1"
-                  strokeWidth="2"
-                  stroke={isRec ? "#fff" : "none"}
-                />
-              </svg>
-            </label>
           </div>
           <div
             style={{

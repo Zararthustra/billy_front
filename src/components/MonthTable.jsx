@@ -9,7 +9,6 @@ export const MonthTable = ({
   setMonthSold,
   movements,
   setRowToEdit,
-  newRows,
   deletedRows,
 }) => {
   //___________________________________________________ Variables
@@ -27,8 +26,6 @@ export const MonthTable = ({
   });
 
   //___________________________________________________ Functions
-
-  const handleEditCheck = () => {};
 
   const table = useTable({ columns, data }, useSortBy);
 
@@ -125,31 +122,6 @@ export const MonthTable = ({
                         </td>
                       );
                     }
-                    if (cell.column.id === "rec")
-                      return (
-                        <td {...cell.getCellProps()}>
-                          <label className="box">
-                            <input
-                              type="checkbox"
-                              onChange={() => handleEditCheck}
-                            />
-                            <svg
-                              className={`check ${
-                                cell.value ? "check--active" : ""
-                              }`}
-                              aria-hidden="true"
-                              viewBox="0 0 15 10"
-                              fill="none"
-                            >
-                              <path
-                                d="M1 4.5L5 9L14 1"
-                                strokeWidth="2"
-                                stroke={cell.value ? "#fff" : "none"}
-                              />
-                            </svg>
-                          </label>
-                        </td>
-                      );
                     return (
                       // Apply the cell props
                       <td {...cell.getCellProps()}>

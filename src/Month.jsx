@@ -125,8 +125,8 @@ export const Month = () => {
   //___________________________________________________ Render
   return (
     <main className="monthPage">
-      <Home />
-      <Logout />
+      {!rowToEdit && <Home />}
+      {!rowToEdit && <Logout />}
       {rowToEdit && (
         <EditRow
           month={parseInt(monthParam)}
@@ -136,6 +136,7 @@ export const Month = () => {
           deletedRows={deletedRows}
           setDeletedRows={setDeletedRows}
           libsArray={libsArray}
+          isRec={false}
         />
       )}
       <div className="monthHead">
@@ -147,7 +148,9 @@ export const Month = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={
-              getSummary.map((item) => item.month).includes(monthParam - 1 === 0 ? 12 : monthParam - 1)
+              getSummary
+                .map((item) => item.month)
+                .includes(monthParam - 1 === 0 ? 12 : monthParam - 1)
                 ? {}
                 : { display: "none" }
             }
@@ -169,7 +172,9 @@ export const Month = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={
-              getSummary.map((item) => item.month).includes(monthParam + 1 === 13 ? 1 : monthParam + 1)
+              getSummary
+                .map((item) => item.month)
+                .includes(monthParam + 1 === 13 ? 1 : monthParam + 1)
                 ? {}
                 : { display: "none" }
             }
@@ -178,15 +183,14 @@ export const Month = () => {
           </svg>
         </div>
       </div>
-      {!rowToEdit && (
-        <AddRow
-          month={parseInt(monthParam)}
-          year={parseInt(yearParam)}
-          libsArray={libsArray}
-          newRows={newRows}
-          setNewRows={setNewRows}
-        />
-      )}
+      <AddRow
+        month={parseInt(monthParam)}
+        year={parseInt(yearParam)}
+        libsArray={libsArray}
+        newRows={newRows}
+        setNewRows={setNewRows}
+        isRec={false}
+      />
       <div className="tableContainer">
         <MonthTable
           lastMonthSummary={getLastMonthSummary}
@@ -194,7 +198,6 @@ export const Month = () => {
           setMonthSold={setMonthSold}
           movements={getMonthMovements.concat(newRows)}
           setRowToEdit={setRowToEdit}
-          newRows={newRows}
           deletedRows={deletedRows}
         />
       </div>

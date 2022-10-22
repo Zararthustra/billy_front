@@ -111,8 +111,10 @@ export const movementSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteMovements.fulfilled, (state, action) => {
-        state.status = "succeeded"
-        const tmp = state.movements.filter((item) => item.id !== action.payload.id)
+        state.status = "succeeded";
+        const tmp = state.movements.filter(
+          (item) => item.id !== action.payload.id
+        );
         state.movements = tmp;
       })
       .addCase(deleteMovements.rejected, (state, action) => {

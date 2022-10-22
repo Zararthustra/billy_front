@@ -1,30 +1,53 @@
 import { Home } from "./components/Home";
 import { Logout } from "./components/Logout";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { EditRow } from "./components/EditRow";
+import { AddRow } from "./components/AddRow";
 // import { createMovements } from "./redux/movementSlice";
 
 export const Recurrences = () => {
   //___________________________________________________ Variables
 
-  const dispatch = useDispatch();
-
-  // const getSummary = useSelector((state) => state.summary.summary);
+  const getAllMovements = useSelector((state) => state.movements.movements);
   const getRecMovements = useSelector(
     (state) => state.movements.movements
   ).filter((item) => item.rec);
 
+  const [newRows, setNewRows] = useState([]);
+  const [rowToEdit, setRowToEdit] = useState(null);
+  const [deletedRows, setDeletedRows] = useState([]);
+  const libsArray = [...new Set(getAllMovements.map((item) => item.lib))];
+
   //___________________________________________________ Functions
-
-  const goRecs = () => {};
-
   //___________________________________________________ Render
   return (
     <main className="monthPage">
-      <Home />
-      <Logout />
+      {!rowToEdit && <Home />}
+      {!rowToEdit && <Logout />}
+      {rowToEdit && (
+        <EditRow
+          month={0}
+          year={9999}
+          row={rowToEdit}
+          setRow={setRowToEdit}
+          deletedRows={deletedRows}
+          setDeletedRows={setDeletedRows}
+          libsArray={libsArray}
+          isRec={true}
+        />
+      )}
       <div className="monthHead">
         <h1>Récurrences</h1>
       </div>
+      <AddRow
+        month={0}
+        year={9999}
+        libsArray={libsArray}
+        newRows={newRows}
+        setNewRows={setNewRows}
+        isRec={true}
+      />
       <div
         className="recsContainer"
         style={{
@@ -39,6 +62,15 @@ export const Recurrences = () => {
           return (
             <div
               key={index}
+              onClick={() =>
+                !deletedRows.map((item) => item.id).includes(item.id) &&
+                setRowToEdit(item)
+              }
+              className={
+                deletedRows.map((item) => item.id).includes(item.id)
+                  ? "recurrence temporaryDelRow"
+                  : "recurrence"
+              }
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -47,11 +79,11 @@ export const Recurrences = () => {
                 gap: "3rem",
                 padding: "2rem",
                 borderRadius: "5px",
-                border: "1px solid var(--mauve)",
-                boxShadow: "0 0 100px #4a005815",
-                marginTop: "2rem",
-                maxWidth: "20rem",
-                height: "15rem",
+                margin: "1rem",
+                width: "17rem",
+                // maxWidth: "20rem",
+                // minWidth: "10rem",
+                cursor: "pointer",
               }}
             >
               <div
@@ -66,13 +98,13 @@ export const Recurrences = () => {
                 }}
               >
                 <div
+                  className="recTitles"
                   style={{
                     fontSize: "2rem",
-                    maxWidth: "20rem",
+                    maxWidth: "15rem",
                     whiteSpace: "nowrap",
                     textOverflow: "ellipsis",
                     overflow: "hidden",
-                    color: "var(--orange)",
                     marginBottom: "1rem",
                   }}
                 >
@@ -87,28 +119,6 @@ export const Recurrences = () => {
                   {Math.abs(item.value)} €
                 </div>
                 <div>Tous les {item.day}</div>
-              </div>
-              <div
-                className="recActions"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "1rem",
-                }}
-              >
-                <div
-                  className="primaryButton"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                  }}
-                >
-                  Modifier
-                </div>
-                <div className="secondaryButton">Supprimer</div>
               </div>
             </div>
           );

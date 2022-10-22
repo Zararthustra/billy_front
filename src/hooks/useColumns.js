@@ -19,10 +19,6 @@ export default function useColumns() {
         Header: "Solde",
         accessor: "sold",
       },
-      {
-        Header: "Récurrent",
-        accessor: "rec",
-      },
     ],
     []
   );

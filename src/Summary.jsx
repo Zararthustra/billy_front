@@ -2,28 +2,67 @@ import { CollapsableYear } from "./components/CollapsableYear";
 import { Logout } from "./components/Logout";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addMonth } from "./redux/summarySlice";
+import { createSummary } from "./redux/summarySlice";
 import { getLocalStorage } from "./utils/localStorage";
+import { createMovements } from "./redux/movementSlice";
+// import { useEffect } from "react";
 
 export const Summary = () => {
   //___________________________________________________ Variables
 
-  const getSummary = useSelector((state) => state.summary);
-  const getAccount = getLocalStorage("account");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const getSummary = useSelector((state) => state.summary.summary);
+  let getYears = getSummary
+    .map((summary) => summary.year)
+    .filter((year, index, years) => years.indexOf(year) === index);
+  const getSummaryStatus = useSelector((state) => state.summary.status);
+  // const getSummaryError = useSelector((state) => state.summary.error);
+  const getAccount = getLocalStorage("account");
+  const getRecMovements = useSelector(
+    (state) => state.movements.movements
+  ).filter((item) => item.rec);
+
+  let lastMonth;
+  let lastSold;
 
   //___________________________________________________ Functions
 
   const createNewMonth = () => {
-    const lastMonth = getSummary.at(-1).months.at(-1);
-    const lastSold = getSummary.at(-1).solds.at(-1);
-    const newMonth = lastMonth === 12 ? 1 : lastMonth + 1;
+    const newMonth =
+      lastMonth === 12 ? 1 : lastMonth + 1 || new Date().getMonth();
     const newYear =
-      newMonth === 1 ? getSummary.at(-1).year + 1 : getSummary.at(-1).year;
+      newMonth === 1
+        ? getYears.at(-1) + 1
+        : getYears.at(-1) || new Date().getFullYear();
 
-    dispatch(addMonth({ year: newYear, month: newMonth, sold: lastSold }));
+    dispatch(
+      createSummary({
+        year: newYear,
+        month: newMonth,
+        sold: lastSold,
+      })
+    );
+
+    const duplicatedRecs = getRecMovements.map((item) => {
+      return {
+        year: newYear,
+        month: newMonth,
+        day: item.day,
+        lib: item.lib,
+        value: item.value,
+        sold: 0,
+        rec: false,
+      };
+    });
+
+    dispatch(createMovements(duplicatedRecs));
     navigate(`/${newYear}/${newMonth}`);
+  };
+
+  const goRecs = () => {
+    navigate("/recurrences")
   };
 
   //___________________________________________________ Render
@@ -33,20 +72,37 @@ export const Summary = () => {
       <div className="summaryHead">
         <h1>{getAccount}</h1>
       </div>
-      {getSummary.map((yearObject, index) => {
-        return (
-          <div key={index} className="yearContainer">
-            <CollapsableYear
-              months={yearObject.months}
-              year={yearObject.year}
-              solds={yearObject.solds}
-            />
-          </div>
-        );
-      })}
       <button className="primaryButton" onClick={createNewMonth}>
         Nouveau mois +
       </button>
+      <button className="secondaryButton" onClick={goRecs}>
+        Mes récurrences
+      </button>
+      {getYears.map((year, index) => {
+        const months = getSummary
+          .filter((item) => item.year === year)
+          .map((item) => {
+            lastMonth = item.month;
+            return item.month;
+          });
+        const solds = getSummary
+          .filter((item) => item.year === year)
+          .map((item) => {
+            lastSold = item.sold;
+            return item.sold;
+          });
+        return (
+          <div key={index} className="yearContainer">
+            {getSummaryStatus === "loading" ? (
+              <>Loading...</>
+            ) : (
+              getSummaryStatus === "succeeded" && (
+                <CollapsableYear months={months} year={year} solds={solds} />
+              )
+            )}
+          </div>
+        );
+      })}
     </main>
   );
 };

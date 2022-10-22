@@ -5,7 +5,7 @@ export default function useColumns() {
     () => [
       {
         Header: "Date",
-        accessor: "date",
+        accessor: "day",
       },
       {
         Header: "Libellé",
@@ -17,11 +17,11 @@ export default function useColumns() {
       },
       {
         Header: "Solde",
-        accessor: "solde",
+        accessor: "sold",
       },
       {
         Header: "Récurrent",
-        accessor: "recurrent",
+        accessor: "rec",
       },
     ],
     []

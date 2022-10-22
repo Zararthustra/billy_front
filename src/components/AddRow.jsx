@@ -1,29 +1,23 @@
 import { useRef, useState } from "react";
 import Select from "react-select";
-import { useSelector } from "react-redux";
 import CreatableSelect from "react-select/creatable";
 
 export const AddRow = ({
   month,
   year,
-  movements,
-  setMovements,
+  libsArray,
   newRows,
   setNewRows,
 }) => {
   //___________________________________________________ Variables
 
-  const [date, setDate] = useState(null);
+  const [day, setDay] = useState(null);
   const [lib, setLib] = useState("");
   const [deb, setDeb] = useState(null);
   const [cred, setCred] = useState(null);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState("");
   const [isRec, setIsRec] = useState(false);
-  const [libs, setLibs] = useState(
-    useSelector((state) => state.movements).map((item) => {
-      return { value: item.lib, label: item.lib };
-    })
-  );
+  const [libs, setLibs] = useState([]);
   const dateRef = useRef();
   const libRef = useRef();
 
@@ -64,6 +58,8 @@ export const AddRow = ({
       ...base,
       cursor: "pointer",
       border: "none",
+      fontFamily: "var(--num-font)",
+      width: "8rem",
       boxShadow: "none",
     }),
     option: (base, state) => ({
@@ -82,19 +78,19 @@ export const AddRow = ({
   //___________________________________________________ Functions
 
   const handleDate = (event) => {
-    if (event) setDate(event.value);
+    if (event) setDay(event.value);
   };
 
   const handleLib = (event) => {
     if (event) setLib(event.value);
   };
   const handleCreateLib = (val) => {
-    if (val.length > 35) return; //add toast error message
+    // if (val.length > 35) return; //add toast error message
     setLibs([...libs, { value: val, label: val }]);
   };
 
   const handleValue = (event) => {
-    const val = parseFloat(event.target.value);
+    const val = parseFloat(event.target.value) || "";
     if (event.target.value.length > 7) return;
     setValue(val < 0 ? val * -1 : val);
   };
@@ -116,21 +112,21 @@ export const AddRow = ({
   };
 
   const handleAddRow = () => {
-    if (deb === null || cred === null || !date || lib === "") return;
+    if (deb === null || cred === null || !day || lib === "") return;
     const payload = {
       year,
       month,
-      date,
+      day,
       lib,
       value: cred ? value : value * -1,
       sold: 0,
-      recurrent: isRec,
+      rec: isRec,
     };
 
     const containsDuplicateRow =
       newRows.filter(
         (item) =>
-          item.date === payload.date &&
+          item.day === payload.day &&
           item.lib === payload.lib &&
           item.value === payload.value &&
           item.recurrent === payload.recurrent
@@ -138,17 +134,16 @@ export const AddRow = ({
 
     if (containsDuplicateRow) return; // add toast error
 
-    setMovements([...movements, payload]);
     setNewRows([...newRows, payload]);
 
     // Clear inputs
     dateRef.current.clearValue();
     libRef.current.clearValue();
-    setDate(null);
+    setDay(null);
     setLib("");
     setDeb(null);
     setCred(null);
-    setValue(0);
+    setValue("");
     setIsRec(false);
     return;
   };
@@ -183,7 +178,11 @@ export const AddRow = ({
           className="selectLib"
           onCreateOption={handleCreateLib}
           onChange={handleLib}
-          options={libs}
+          options={libs.concat(
+            libsArray.map((item) => {
+              return { value: item, label: item };
+            })
+          )}
         />
       </div>
       <div className="labelWraper">
@@ -195,10 +194,10 @@ export const AddRow = ({
           min="0"
           id="price"
           step="0.01"
-          placeholder=". . ."
+          placeholder="0.00"
           value={value}
           onChange={handleValue}
-          style={{ width: value.toString().length + 2 + "ch" }}
+          style={{ width: value.toString().length + 5 + "ch" }}
         />
       </div>
       <div

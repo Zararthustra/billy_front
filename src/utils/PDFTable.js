@@ -1,8 +1,7 @@
 import ReactDOMServer from "react-dom/server";
 import { getMonth } from "./getMonth";
-import { getSold } from "./getSold";
 
-export const PDFTable = (movements, year, month, getSummary) => {
+export const PDFTable = (movements, year, month, lastMonthSummary) => {
   //___________________________________________________ Variables
 
   const style = ReactDOMServer.renderToString(
@@ -16,17 +15,16 @@ export const PDFTable = (movements, year, month, getSummary) => {
 
       h1 {
         text-align: center;
-        margin-top: 2rem;
+        margin: 1rem 0 0 0;
       }
 
       h2 {
         text-align: center;
-        margin-bottom: 2rem;
+        margin: 0 0 1rem 0;
       }
 
       table {
         text-align: center;
-        padding-bottom: 4rem;
       }
       
       table tbody tr:nth-child(even) {
@@ -54,24 +52,26 @@ export const PDFTable = (movements, year, month, getSummary) => {
       
       /* head */
       table th {
-        padding: 1rem;
+        padding: 0rem 1rem;
         font-size: 1.2rem;
         text-align: center;
       }
       
       /* cell */
       table td {
-        padding: 1rem 2rem;
+        padding: .1rem 2rem;
       }
 `}
     </style>
   );
 
   const lastMonth = month - 1 === 0 ? 12 : month - 1;
-  const yearOfLastMonth = lastMonth === 12 ? year - 1 : year;
-  let incrementedSoldes = getSold(yearOfLastMonth, lastMonth, getSummary) || 0;
+  let incrementedSoldes = lastMonthSummary.sold || 0;
   let catchValue = 0;
   const columns = ["Date", "Libellé", "Montant", "Solde"];
+  const sortedMovements = movements.sort(
+    (a, b) => parseFloat(a.day) - parseFloat(b.day)
+  );
 
   const table = ReactDOMServer.renderToString(
     <table>
@@ -90,16 +90,16 @@ export const PDFTable = (movements, year, month, getSummary) => {
           <td>
             {getMonth(lastMonth)}
             <br />
-            {getSold(yearOfLastMonth, lastMonth, getSummary) || 0} €
+            {lastMonthSummary.sold || 0} €
           </td>
           <td></td>
         </tr>
-        {movements.map((item, index) => {
+        {sortedMovements.map((item, index) => {
           catchValue = item.value;
           incrementedSoldes += catchValue;
           return (
             <tr key={index}>
-              <td>{item.date}</td>
+              <td>{item.day}</td>
               <td>{item.lib}</td>
               <td style={{ color: item.value > 0 ? "green" : "red" }}>
                 {Math.abs(item.value)}

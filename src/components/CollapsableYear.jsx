@@ -6,7 +6,9 @@ import { saveLocalStorage } from "../utils/localStorage";
 export const CollapsableYear = ({ months, year, solds }) => {
   //___________________________________________________ Variables
   const navigate = useNavigate();
-  const [collapse, setCollapse] = useState(new Date().getFullYear() === year ? false : true);
+  const [collapse, setCollapse] = useState(
+    new Date().getFullYear() === year ? false : true
+  );
 
   //___________________________________________________ Functions
   const goMonth = (month, solde) => {
@@ -38,9 +40,15 @@ export const CollapsableYear = ({ months, year, solds }) => {
         <ul className="monthsContainer">
           {months.map((month, idx) => {
             return (
-              <li key={idx} className="monthRow" onClick={() => goMonth(month, solds[idx])}>
+              <li
+                key={idx}
+                className="monthRow"
+                onClick={() => goMonth(month, solds[idx])}
+              >
                 <div>{getMonth(month)}</div>
-                <div className="monthSolde">{solds[idx]} €</div>
+                <div className="monthSolde">
+                  {solds[idx] % 1 !== 0 ? solds[idx]?.toFixed(2) : solds[idx]} €
+                </div>
               </li>
             );
           })}

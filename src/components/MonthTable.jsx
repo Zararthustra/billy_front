@@ -1,25 +1,22 @@
 import { useTable, useSortBy } from "react-table";
 import useColumns from "../hooks/useColumns";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { getSold } from "../utils/getSold";
 import { getMonth } from "../utils/getMonth";
 
 export const MonthTable = ({
-  month,
-  year,
+  lastMonthSummary,
   lastMonth,
   setMonthSold,
   movements,
   setRowToEdit,
+  newRows,
+  deletedRows,
 }) => {
   //___________________________________________________ Variables
 
   const columns = useColumns();
-  const getSummary = useSelector((state) => state.summary);
 
-  let yearOfLastMonth = lastMonth === 12 ? year - 1 : year;
-  let incrementedSoldes = getSold(yearOfLastMonth, lastMonth, getSummary) || 0;
+  let incrementedSoldes = lastMonthSummary.sold || 0;
 
   let catchValue = 0;
 
@@ -39,7 +36,6 @@ export const MonthTable = ({
     table;
 
   //___________________________________________________ Render
-
   return (
     <table {...getTableProps()}>
       <thead>
@@ -67,7 +63,12 @@ export const MonthTable = ({
           <td>
             {getMonth(lastMonth)}
             <br />
-            {getSold(yearOfLastMonth, lastMonth, getSummary) || 0} €
+            {lastMonthSummary.sold === undefined
+              ? 0
+              : lastMonthSummary.sold % 1 !== 0
+              ? lastMonthSummary.sold?.toFixed(2)
+              : lastMonthSummary.sold}{" "}
+            €
           </td>
           <td></td>
         </tr>
@@ -80,7 +81,22 @@ export const MonthTable = ({
               // Apply the row props
               <tr
                 {...row.getRowProps()}
-                onClick={() => setRowToEdit(row.original)}
+                onClick={() =>
+                  row.original.id !== undefined &&
+                  !deletedRows
+                  .map((item) => item.id)
+                  .includes(row.original.id) &&
+                  setRowToEdit(row.original)
+                }
+                className={
+                  row.original.id === undefined
+                    ? "temporaryAddRow"
+                    : deletedRows
+                        .map((item) => item.id)
+                        .includes(row.original.id)
+                    ? "temporaryDelRow"
+                    : ""
+                }
               >
                 {
                   // Loop over the rows cells
@@ -99,7 +115,7 @@ export const MonthTable = ({
                         </td>
                       );
                     }
-                    if (cell.column.id === "solde") {
+                    if (cell.column.id === "sold") {
                       incrementedSoldes += catchValue;
                       return (
                         <td {...cell.getCellProps()}>
@@ -109,7 +125,7 @@ export const MonthTable = ({
                         </td>
                       );
                     }
-                    if (cell.column.id === "recurrent")
+                    if (cell.column.id === "rec")
                       return (
                         <td {...cell.getCellProps()}>
                           <label className="box">

@@ -1,21 +1,22 @@
 import { useState } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteRow, updateRow } from "../redux/movementSlice";
+import { useDispatch } from "react-redux";
+import { deleteMovements, updateMovements } from "../redux/movementSlice";
 
 export const EditRow = ({
   month,
   year,
   row,
   setRow,
-  movements,
-  setMovements,
+  deletedRows,
+  setDeletedRows,
+  libsArray
 }) => {
   //___________________________________________________ Variables
   const dispatch = useDispatch();
 
-  const [date, setDate] = useState(row.date);
+  const [day, setDay] = useState(row.day);
   const [lib, setLib] = useState(row.lib);
   const [deb, setDeb] = useState(
     row.value ? (row.value > 0 ? false : true) : null
@@ -24,13 +25,12 @@ export const EditRow = ({
     row.value ? (row.value > 0 ? true : false) : null
   );
   const [value, setValue] = useState(Math.abs(row.value));
-  const [isRec, setIsRec] = useState(row.recurrent);
+  const [isRec, setIsRec] = useState(row.rec);
   const [libs, setLibs] = useState(
-    useSelector((state) => state.movements).map((item) => {
-      return { value: item.lib, label: item.lib };
+    libsArray.map((item) => {
+      return { value: item, label: item };
     })
   );
-
   const selectDateStyle = {
     singleValue: (base, state) => ({
       ...base,
@@ -86,7 +86,7 @@ export const EditRow = ({
   //___________________________________________________ Functions
 
   const handleDate = (event) => {
-    if (event) setDate(event.value);
+    if (event) setDay(event.value);
   };
 
   const handleLib = (event) => {
@@ -120,33 +120,31 @@ export const EditRow = ({
   };
 
   const handleEditRow = () => {
-    if (deb === null || cred === null || !date || lib === "") return;
-    let tmp = [...movements];
+    if (deb === null || cred === null || !day || lib === "") return;
     const payload = {
       id: row.id,
       year,
       month,
-      date,
+      day,
       lib,
       value: cred ? value : value * -1,
       sold: 0,
-      recurrent: isRec,
+      rec: isRec,
     };
 
-    const movementIndex = movements.findIndex((item) => item.id === row.id);
-    tmp[movementIndex] = payload;
-    setMovements(tmp);
-    dispatch(updateRow({ id: row.id, row: payload }));
+    dispatch(updateMovements(payload));
 
     setRow(null);
     return;
   };
 
   const handleDeleteRow = () => {
-    dispatch(deleteRow({ id: row.id }));
-    setMovements(movements.filter((item) => item.id !== row.id));
+    dispatch(deleteMovements(row));
+    setDeletedRows([...deletedRows, row])
     setRow(null);
+    return
   };
+
   //___________________________________________________ Render
 
   return (
@@ -174,7 +172,7 @@ export const EditRow = ({
                 isClearable={true}
                 className="selectDate"
                 onChange={handleDate}
-                defaultValue={{ value: date, label: date }}
+                defaultValue={{ value: day, label: day }}
                 options={[...Array(31).keys()].map((item) => {
                   return { value: item + 1, label: item + 1 };
                 })}

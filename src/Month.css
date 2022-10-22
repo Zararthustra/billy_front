@@ -1,17 +1,19 @@
 @media (max-width: 900px) {
   .monthHead h1 {
-    font-size: 3rem !important;
+    font-size: 2rem !important;
   }
 
   .monthHead h2 {
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
   }
 
   .tableContainer {
     align-items: flex-start !important;
     overflow-x: scroll !important;
   }
-
+  .monthHead svg {
+    width: 30px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -35,9 +37,28 @@
   width: 100%;
   height: 30vh;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monthHeadTitle {
+  height: 100%;
+  width: 100%;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.arrow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.monthHead svg {
+  fill: var(--mauve);
+  cursor: pointer;
 }
 
 .monthHead h1 {
@@ -98,7 +119,7 @@
   cursor: pointer;
 }
 
-.monthPage table tbody tr:hover:not(.monthPage table tr:first-child) {
+.monthPage table tbody tr:hover:not(.monthPage table tr:first-child, .temporaryDelRow, .temporaryAddRow) {
   background-color: var(--orange);
   color: white !important;
 }
@@ -142,6 +163,45 @@
   font-family: var(--num-font);
 }
 
+.temporaryDelRow {
+  cursor: no-drop !important;
+  animation: blinkRed 3s ease-in-out infinite;
+}
+
+.temporaryAddRow {
+  cursor: no-drop !important;
+  animation: blinkGreen 3s ease infinite;
+}
+
+@keyframes blinkRed {
+  0% {
+    background-color: none;
+  }
+
+  50% {
+    background-color: #ff000086;
+    color: white;
+  }
+
+  100% {
+    background-color: none;
+  }
+}
+@keyframes blinkGreen {
+  0% {
+    background-color: none;
+  }
+
+  50% {
+    background-color: #6ae255af;
+    color: white;
+  }
+
+  100% {
+    background-color: none;
+  }
+}
+
 /* -------------------------------------------------------- */
 
 .addRowContainer {
@@ -171,7 +231,7 @@
 .inputPrice {
   height: 2.1rem;
   font-size: 1rem;
-  padding-left: .5rem;
+  padding: 0 1rem;
   font-family: var(--num-text);
   outline: none;
   border-radius: 5px;
@@ -192,6 +252,7 @@
   gap: .7rem;
   border-radius: 5px;
   width: 100%;
+  /* cursor:default; */
 }
 
 .selectCredOrDeb p {

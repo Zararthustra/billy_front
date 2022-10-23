@@ -27,7 +27,21 @@ export const MonthTable = ({
 
   //___________________________________________________ Functions
 
-  const table = useTable({ columns, data }, useSortBy);
+  const table = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        sortBy: [
+          {
+            id: "day",
+            desc: false,
+          },
+        ],
+      },
+    },
+    useSortBy
+  );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     table;
@@ -63,8 +77,8 @@ export const MonthTable = ({
             {lastMonthSummary.sold === undefined
               ? 0
               : lastMonthSummary.sold % 1 !== 0
-              ? lastMonthSummary.sold?.toFixed(2)
-              : lastMonthSummary.sold}{" "}
+              ? parseFloat(lastMonthSummary.sold?.toFixed(2)).toLocaleString()
+              : lastMonthSummary.sold.toLocaleString()}{" "}
             €
           </td>
         </tr>
@@ -80,8 +94,8 @@ export const MonthTable = ({
                 onClick={() =>
                   row.original.id !== undefined &&
                   !deletedRows
-                  .map((item) => item.id)
-                  .includes(row.original.id) &&
+                    .map((item) => item.id)
+                    .includes(row.original.id) &&
                   setRowToEdit(row.original)
                 }
                 className={
@@ -107,7 +121,7 @@ export const MonthTable = ({
                           }}
                           {...cell.getCellProps()}
                         >
-                          {catchValue < 0 ? catchValue * -1 : catchValue}
+                          {catchValue < 0 ? catchValue * -1 : catchValue.toLocaleString()}
                         </td>
                       );
                     }
@@ -116,8 +130,8 @@ export const MonthTable = ({
                       return (
                         <td {...cell.getCellProps()}>
                           {incrementedSoldes % 1 !== 0
-                            ? incrementedSoldes.toFixed(2)
-                            : incrementedSoldes}
+                            ? parseFloat(incrementedSoldes.toFixed(2)).toLocaleString()
+                            : incrementedSoldes.toLocaleString()}
                         </td>
                       );
                     }

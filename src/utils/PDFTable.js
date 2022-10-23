@@ -90,7 +90,7 @@ export const PDFTable = (movements, year, month, lastMonthSummary) => {
           <td>
             {getMonth(lastMonth)}
             <br />
-            {lastMonthSummary.sold || 0} €
+            {parseFloat(lastMonthSummary.sold).toLocaleString() || 0} €
           </td>
         </tr>
         {sortedMovements.map((item, index) => {
@@ -105,8 +105,8 @@ export const PDFTable = (movements, year, month, lastMonthSummary) => {
               </td>
               <td>
                 {incrementedSoldes % 1 !== 0
-                  ? incrementedSoldes.toFixed(2)
-                  : incrementedSoldes}
+                  ? parseFloat(incrementedSoldes.toFixed(2)).toLocaleString()
+                  : incrementedSoldes.toLocaleString()}
               </td>
             </tr>
           );
@@ -120,8 +120,8 @@ export const PDFTable = (movements, year, month, lastMonthSummary) => {
       <h1>{getMonth(month)}</h1>
       <h2 style={{ color: incrementedSoldes > 0 ? "green" : "red" }}>
         {incrementedSoldes % 1 !== 0
-          ? incrementedSoldes.toFixed(2)
-          : incrementedSoldes}{" "}
+          ? parseFloat(incrementedSoldes.toFixed(2)).toLocaleString()
+          : incrementedSoldes.toLocaleString()}{" "}
         €
       </h2>
     </>

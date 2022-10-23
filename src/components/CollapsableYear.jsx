@@ -47,7 +47,7 @@ export const CollapsableYear = ({ months, year, solds }) => {
               >
                 <div>{getMonth(month)}</div>
                 <div className="monthSolde">
-                  {solds[idx] % 1 !== 0 ? solds[idx]?.toFixed(2) : solds[idx]} €
+                  {solds[idx] % 1 !== 0 ? parseFloat(solds[idx]?.toFixed(2)).toLocaleString() : solds[idx].toLocaleString()} €
                 </div>
               </li>
             );

@@ -2,7 +2,7 @@ import { Logout } from "./components/Logout";
 import { Home } from "./components/Home";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMonth } from "./utils/getMonth";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { MonthTable } from "./components/MonthTable";
 import { AddRow } from "./components/AddRow";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { createMovements } from "./redux/movementSlice";
 import { updateSummary } from "./redux/summarySlice";
 import { EditRow } from "./components/EditRow";
 import { PDFTable } from "./utils/PDFTable";
-// import { useEffect } from "react";
+import CountUp from "react-countup";
 
 export const Month = () => {
   //___________________________________________________ Variables
@@ -25,13 +25,10 @@ export const Month = () => {
 
   const getSummary = useSelector((state) => state.summary.summary);
   // const getSummaryStatus = useSelector((state) => state.summary.status); // TODO LOADER
-  const getMonthSummary = useMemo(
-    () =>
-      getSummary.filter(
-        (item) => item.year === yearParam && item.month === monthParam
-      )[0] || {},
-    [monthParam, getSummary, yearParam]
-  );
+  const getMonthSummary =
+    getSummary.filter(
+      (item) => item.year === yearParam && item.month === monthParam
+    )[0] || {};
   const getLastMonthSummary =
     getSummary.filter(
       (item) => item.year === yearOfLastMonth && item.month === lastMonth
@@ -161,7 +158,14 @@ export const Month = () => {
         <div className="monthHeadTitle">
           <h1>{month}</h1>
           <h2>
-            {monthSold % 1 !== 0 ? monthSold?.toFixed(2) : monthSold || 0} €
+            <CountUp
+              end={monthSold % 1 !== 0 ? monthSold?.toFixed(2) : monthSold || 0}
+              duration={2}
+              decimals={monthSold % 1 !== 0 ? 2 : 0}
+              decimal={","}
+              separator={" "}
+            />{" "}
+            €
           </h2>
         </div>
         <div className="arrow" onClick={() => goMonth("next")}>

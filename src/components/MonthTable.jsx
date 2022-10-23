@@ -67,7 +67,6 @@ export const MonthTable = ({
               : lastMonthSummary.sold}{" "}
             €
           </td>
-          <td></td>
         </tr>
         {
           // Loop over the table rows

@@ -92,7 +92,6 @@ export const PDFTable = (movements, year, month, lastMonthSummary) => {
             <br />
             {lastMonthSummary.sold || 0} €
           </td>
-          <td></td>
         </tr>
         {sortedMovements.map((item, index) => {
           catchValue = item.value;

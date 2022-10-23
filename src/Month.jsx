@@ -204,8 +204,8 @@ export const Month = () => {
       <button className="primaryButton" onClick={saveMonth}>
         Enregistrer
       </button>
-      <button className="primaryButton" onClick={printTable}>
-        Imprimer
+      <button className="secondaryButton" onClick={printTable}>
+        Générer un PDF
       </button>
     </main>
   );

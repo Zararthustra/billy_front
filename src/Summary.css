@@ -44,10 +44,12 @@
   letter-spacing: 5px;
   animation: .5s ease-in-out fadeInn;
 }
+
 @keyframes fadeInn {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -58,6 +60,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   width: 100%;
 }
 
@@ -78,7 +81,19 @@
 
 .collapseDiv svg {
   stroke: var(--light-text);
+  animation: .5s rotate ease;
 }
+
+@keyframes rotate {
+  0% {
+    transform: rotate(-90deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 
 .yearContainer h3 {
   font-family: var(--num-font);
@@ -96,6 +111,23 @@
   width: 80%;
   max-width: 40rem;
   gap: 1rem;
+  animation: .5s dropDown ease;
+}
+
+@keyframes dropDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  90% {
+    transform: translateY(10%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .monthRow {
@@ -142,13 +174,16 @@
   gap: 1rem;
   animation: .5s ease-in-out slideInFromRight;
 }
+
 @keyframes slideInFromRight {
   0% {
     transform: translateX(100%);
   }
+
   90% {
     transform: translateX(-10%);
   }
+
   100% {
     transform: translateX(0);
   }

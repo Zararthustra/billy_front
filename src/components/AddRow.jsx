@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { createMovements } from "../redux/movementSlice";
+import { Reconnect } from "./Reconnect";
 
 export const AddRow = ({
   month,
@@ -22,9 +23,10 @@ export const AddRow = ({
   const [cred, setCred] = useState(null);
   const [value, setValue] = useState("");
   const [libs, setLibs] = useState([]);
+  const [needToRefresh, setNeedToRefresh] = useState(false);
   const dateRef = useRef();
   const libRef = useRef();
-
+  //setNeedToRefresh
   const selectDateStyle = {
     singleValue: (base, state) => ({
       ...base,
@@ -138,7 +140,13 @@ export const AddRow = ({
     if (containsDuplicateRow) return; // add toast error
 
     setNewRows([...newRows, payload]);
-    if (isRec) dispatch(createMovements([payload]));
+    if (isRec)
+      dispatch(createMovements(payload))
+        .then((res) => {
+          if (res.error?.message.split(" ").at(-1) === "401")
+            setNeedToRefresh(true);
+        })
+        .catch((err) => console.log(err));
 
     // Clear inputs
     dateRef.current.clearValue();
@@ -154,96 +162,100 @@ export const AddRow = ({
   //___________________________________________________ Render
 
   return (
-    <div className="addRowContainer">
-      <div className="labelWraper">
-        Date
-        <Select
-          ref={dateRef}
-          isSearchable={true}
-          // placeholder="Date"
-          styles={selectDateStyle}
-          isClearable={true}
-          className="selectDate"
-          onChange={handleDate}
-          options={[...Array(31).keys()].map((item) => {
-            return { value: item + 1, label: item + 1 };
-          })}
-        />
-      </div>
-      <div className="labelWraper">
-        Libellé
-        <CreatableSelect
-          ref={libRef}
-          isSearchable={true}
-          // placeholder="Libellé"
-          styles={selectLibStyle}
-          isClearable={true}
-          className="selectLib"
-          onCreateOption={handleCreateLib}
-          onChange={handleLib}
-          options={libs.concat(
-            libsArray.map((item) => {
-              return { value: item, label: item };
-            })
-          )}
-        />
-      </div>
-      <div className="labelWraper">
-        Montant
-        <input
-          className="inputPrice"
-          type="number"
-          name="price"
-          min="0"
-          id="price"
-          step="0.01"
-          placeholder="0.00"
-          value={value}
-          onChange={handleValue}
-          style={{ width: value.toString().length + 5 + "ch" }}
-        />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: ".2rem",
-          minWidth: "8rem",
-        }}
-      >
-        <div className="selectCredOrDeb" onClick={() => handleDebOrCred("deb")}>
-          <p
-            style={{
-              fontWeight: deb ? "600" : "",
-              color: deb ? "#000" : "#9b9999",
-              cursor: "pointer",
-            }}
-          >
-            Débit
-          </p>
-          <div className={`deb ${deb ? "isActive" : ""}`}>-</div>
+    <>
+      {needToRefresh && <Reconnect />}
+      <div className="addRowContainer">
+        <div className="labelWraper">
+          Date
+          <Select
+            ref={dateRef}
+            isSearchable={true}
+            styles={selectDateStyle}
+            isClearable={true}
+            className="selectDate"
+            onChange={handleDate}
+            options={[...Array(31).keys()].map((item) => {
+              return { value: item + 1, label: item + 1 };
+            })}
+          />
+        </div>
+        <div className="labelWraper">
+          Libellé
+          <CreatableSelect
+            ref={libRef}
+            isSearchable={true}
+            styles={selectLibStyle}
+            isClearable={true}
+            className="selectLib"
+            onCreateOption={handleCreateLib}
+            onChange={handleLib}
+            options={libs.concat(
+              libsArray.map((item) => {
+                return { value: item, label: item };
+              })
+            )}
+          />
+        </div>
+        <div className="labelWraper">
+          Montant
+          <input
+            className="inputPrice"
+            type="number"
+            name="price"
+            min="0"
+            id="price"
+            step="0.01"
+            placeholder="0.00"
+            value={value}
+            onChange={handleValue}
+            style={{ width: value.toString().length + 5 + "ch" }}
+          />
         </div>
         <div
-          className="selectCredOrDeb"
-          onClick={() => handleDebOrCred("cred")}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: ".2rem",
+            minWidth: "8rem",
+          }}
         >
-          <p
-            style={{
-              fontWeight: cred ? "600" : "",
-              color: cred ? "#000" : "#9b9999",
-              cursor: "pointer",
-            }}
+          <div
+            className="selectCredOrDeb"
+            onClick={() => handleDebOrCred("deb")}
           >
-            Crédit
-          </p>
-          <div className={`cred ${cred ? "isActive" : ""}`}>+</div>
+            <p
+              style={{
+                fontWeight: deb ? "600" : "",
+                color: deb ? "#000" : "#9b9999",
+                cursor: "pointer",
+              }}
+            >
+              Débit
+            </p>
+            <div className={`deb ${deb ? "isActive" : ""}`}>-</div>
+          </div>
+          <div
+            className="selectCredOrDeb"
+            onClick={() => handleDebOrCred("cred")}
+          >
+            <p
+              style={{
+                fontWeight: cred ? "600" : "",
+                color: cred ? "#000" : "#9b9999",
+                cursor: "pointer",
+              }}
+            >
+              Crédit
+            </p>
+            <div className={`cred ${cred ? "isActive" : ""}`}>+</div>
+          </div>
         </div>
+        <button className="primaryButton" onClick={handleAddRow}>
+          Ajouter
+        </button>
       </div>
-      <button className="primaryButton" onClick={handleAddRow}>
-        Ajouter
-      </button>
-    </div>
+    </>
   );
 };

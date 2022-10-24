@@ -2,18 +2,20 @@ import { Logout } from "./components/Logout";
 import { Home } from "./components/Home";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMonth } from "./utils/getMonth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MonthTable } from "./components/MonthTable";
 import { AddRow } from "./components/AddRow";
 import { useDispatch, useSelector } from "react-redux";
-import { createMovements } from "./redux/movementSlice";
+import { createMovements, deleteMovements } from "./redux/movementSlice";
 import { updateSummary } from "./redux/summarySlice";
 import { EditRow } from "./components/EditRow";
 import { PDFTable } from "./utils/PDFTable";
 import CountUp from "react-countup";
+import { Reconnect } from "./components/Reconnect";
 
 export const Month = () => {
   //___________________________________________________ Variables
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,6 +41,9 @@ export const Month = () => {
   const getMonthMovements = getAllMovements.filter(
     (item) => item.year === yearParam && item.month === monthParam
   );
+  const getMovementsError = useSelector((state) => state.movements.error)
+    ?.split(" ")
+    .at(-1);
 
   const [rowToEdit, setRowToEdit] = useState(null);
   const [monthSold, setMonthSold] = useState(getMonthSummary.sold);
@@ -48,23 +53,15 @@ export const Month = () => {
   // const [saved, setSaved] = useState(false);
 
   //___________________________________________________ Lifecycle
-  // // Redirect if uri params month is not created yet
-  // useEffect(() => {
-  //   const monthObjectIsEmpty = Object.keys(getMonthSummary).length === 0;
-  //   if (
-  //     (!monthObjectIsEmpty && getMonthSummary.month !== monthParam) ||
-  //     (!monthObjectIsEmpty && getMonthSummary.year !== yearParam)
-  //   )
-  //     return navigate("/accueil");
-  // }, [navigate, monthParam, yearParam, getMonthSummary]);
 
-  //  useEffect(() => {
-  //   if (getMonthMovements) {
-  //     setMovements(getMonthMovements)
-  //   }
-  // }, [getMonthMovements]);
+  useEffect(() => {
+    if (getMovementsError === "401") {
+      console.log("catched");
+    }
+  }, [getMovementsError]);
 
   //___________________________________________________ Functions
+
   const goMonth = (direction) => {
     const nextMonth = monthParam + 1 === 13 ? 1 : monthParam + 1;
     const yearOfNextMonth = nextMonth === 1 ? yearParam + 1 : yearParam;
@@ -110,13 +107,29 @@ export const Month = () => {
   };
 
   const saveMonth = () => {
-    if (getMonthSummary.sold !== monthSold) {
+    if (getMonthSummary.sold !== monthSold)
       dispatch(updateSummary({ id: getMonthSummary.id, sold: monthSold }));
-      dispatch(createMovements(newRows));
-      // setSaved(true); // TODO add toaster here
+
+    if (newRows.length > 0)
+      newRows.map((item) => dispatch(createMovements(item)));
+
+    if (deletedRows.length > 0) {
+      let removedEuros = 0;
+      deletedRows.map((item) => {
+        removedEuros += item.value;
+        return dispatch(deleteMovements(item));
+      });
+      dispatch(
+        updateSummary({
+          id: getMonthSummary.id,
+          sold: monthSold - removedEuros,
+        })
+      );
     }
+
+    // setSaved(true); // TODO add toaster here
     setNewRows([]);
-    window.location.reload();
+    setDeletedRows([]);
   };
 
   //___________________________________________________ Render
@@ -124,6 +137,7 @@ export const Month = () => {
     <main className="monthPage">
       {!rowToEdit && <Home />}
       {!rowToEdit && <Logout />}
+      {getMovementsError === "401" && <Reconnect />}
       {rowToEdit && (
         <EditRow
           month={parseInt(monthParam)}

@@ -4,10 +4,13 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { EditRow } from "./components/EditRow";
 import { AddRow } from "./components/AddRow";
-// import { createMovements } from "./redux/movementSlice";
+import { Reconnect } from "./components/Reconnect";
 
 export const Recurrences = () => {
   //___________________________________________________ Variables
+  const getSummaryError = useSelector((state) => state.summary.error)
+    ?.split(" ")
+    .at(-1);
 
   const getAllMovements = useSelector((state) => state.movements.movements);
   const getRecMovements = useSelector(
@@ -25,6 +28,7 @@ export const Recurrences = () => {
     <main className="monthPage">
       {!rowToEdit && <Home />}
       {!rowToEdit && <Logout />}
+      {getSummaryError === "401" && <Reconnect />}
       {rowToEdit && (
         <EditRow
           month={0}
@@ -72,7 +76,9 @@ export const Recurrences = () => {
                   : "recurrence"
               }
               style={{
-                display: "flex",
+                display: deletedRows.map((item) => item.id).includes(item.id)
+                  ? "none"
+                  : "flex",
                 alignItems: "center",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -81,8 +87,6 @@ export const Recurrences = () => {
                 borderRadius: "5px",
                 margin: "1rem",
                 width: "17rem",
-                // maxWidth: "20rem",
-                // minWidth: "10rem",
                 cursor: "pointer",
               }}
             >

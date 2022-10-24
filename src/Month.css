@@ -1,23 +1,35 @@
 @media (max-width: 900px) {
+
+  .monthHead {
+    background: center 32% no-repeat url("./assets/background.png") !important;
+  }
+
   .monthHead h1 {
-    font-size: 2rem !important;
+    font-size: 4rem !important;
   }
 
   .monthHead h2 {
-    font-size: 1.5rem !important;
+    font-size: 3.5rem !important;
   }
 
+}
+
+@media (max-width: 600px) {
+  .monthHead h1 {
+    font-size: 2.2rem !important;
+  }
+
+  .monthHead h2 {
+    font-size: 2.2rem !important;
+  }
+  .monthHead svg {
+    width: 30px;
+  }
   .tableContainer {
     align-items: flex-start !important;
     overflow-x: scroll !important;
   }
 
-  .monthHead svg {
-    width: 30px;
-  }
-}
-
-@media (max-width: 600px) {
   .addRowContainer {
     padding: 2rem !important;
   }
@@ -42,7 +54,7 @@
 }
 
 .monthHead {
-  background: 100% / cover no-repeat url("./assets/home.png");
+  background: center 27% no-repeat url("./assets/background.png");
   width: 100%;
   height: 30vh;
   display: flex;
@@ -50,14 +62,6 @@
   justify-content: center;
 }
 
-.monthHeadTitle {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
 .arrow {
   width: 100%;
@@ -71,9 +75,23 @@
   cursor: pointer;
 }
 
+.monthHeadTitle {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 65%;
+  border-radius: 5px;
+  padding: 0 1rem;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
 .monthHead h1 {
   margin: 0;
-  font-size: 7rem;
+  font-size: 5rem;
   background: linear-gradient(60deg, #be46f6 0%, #be46f6 20%, #3500a6 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -84,7 +102,8 @@
 .monthHead h2 {
   margin: 0;
   font-family: var(--num-font);
-  font-size: 3rem;
+  font-size: 4rem;
+
   color: white;
 }
 
@@ -229,7 +248,7 @@
   border-radius: 15px;
   border: 2px solid var(--mauve);
   box-shadow: 0 0 50px #4a005815;
-  z-index: 0;
+  z-index: 1;
 }
 
 .labelWraper {
@@ -333,7 +352,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  z-index: 2;
 }
 
 .editRowContainer {

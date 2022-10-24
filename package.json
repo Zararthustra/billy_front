@@ -1,10 +1,12 @@
 {
   "name": "billy_front",
   "version": "0.1.0",
+  "homepage": "/",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^1.1.3",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-countup": "^6.3.2",
     "react-dom": "^18.2.0",

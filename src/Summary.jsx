@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSummary } from "./redux/summarySlice";
 import { getLocalStorage } from "./utils/localStorage";
 import { createMovements } from "./redux/movementSlice";
-// import { useEffect } from "react";
+import { Reconnect } from "./components/Reconnect";
 
 export const Summary = () => {
   //___________________________________________________ Variables
@@ -14,18 +14,21 @@ export const Summary = () => {
   const dispatch = useDispatch();
 
   const getSummary = useSelector((state) => state.summary.summary);
-  let getYears = getSummary
-    .map((summary) => summary.year)
-    .filter((year, index, years) => years.indexOf(year) === index);
   const getSummaryStatus = useSelector((state) => state.summary.status);
-  // const getSummaryError = useSelector((state) => state.summary.error);
-  const getAccount = getLocalStorage("account");
+  const getSummaryError = useSelector((state) => state.summary.error)
+    ?.split(" ")
+    .at(-1);
+
+  const getUsername = getLocalStorage("username");
   const getRecMovements = useSelector(
     (state) => state.movements.movements
   ).filter((item) => item.rec);
 
   let lastMonth;
   let lastSold;
+  let getYears = getSummary
+    .map((summary) => summary.year)
+    .filter((year, index, years) => years.indexOf(year) === index);
 
   //___________________________________________________ Functions
 
@@ -57,20 +60,23 @@ export const Summary = () => {
       };
     });
 
-    dispatch(createMovements(duplicatedRecs));
+    duplicatedRecs.map((item) => dispatch(createMovements(item)));
+    
     navigate(`/${newYear}/${newMonth}`);
   };
 
   const goRecs = () => {
-    navigate("/recurrences")
+    navigate("/recurrences");
   };
 
   //___________________________________________________ Render
+
   return (
     <main className="summaryPage">
       <Logout />
+      {getSummaryError === "401" && <Reconnect />}
       <div className="summaryHead">
-        <h1>{getAccount}</h1>
+        <h1>{getUsername}</h1>
       </div>
       <button className="primaryButton" onClick={createNewMonth}>
         Nouveau mois +

@@ -180,7 +180,7 @@ input[type="checkbox"] {
 
 .recurrence {
   transition: all .5s;
-  outline: 2px solid var(--orange);
+  outline: 1px solid var(--orange);
 }
 
 .recurrence:hover:not(.temporaryDelRow) {

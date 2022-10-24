@@ -12,7 +12,7 @@ export const EditRow = ({
   deletedRows,
   setDeletedRows,
   libsArray,
-  isRec
+  isRec,
 }) => {
   //___________________________________________________ Variables
   const dispatch = useDispatch();
@@ -141,10 +141,10 @@ export const EditRow = ({
   };
 
   const handleDeleteRow = () => {
-    dispatch(deleteMovements(row));
-    setDeletedRows([...deletedRows, row])
+    setDeletedRows([...deletedRows, row]);
+    if (isRec) dispatch(deleteMovements(row));
     setRow(null);
-    return
+    return;
   };
 
   //___________________________________________________ Render
@@ -157,7 +157,7 @@ export const EditRow = ({
             x
           </div>
           <div
-          className="editRowFields"
+            className="editRowFields"
             style={{
               display: "flex",
               flexWrap: "wrap",

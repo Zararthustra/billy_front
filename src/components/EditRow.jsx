@@ -13,6 +13,7 @@ export const EditRow = ({
   setDeletedRows,
   libsArray,
   isRec,
+  setTriggerRefreshToken,
 }) => {
   //___________________________________________________ Variables
   const dispatch = useDispatch();
@@ -134,7 +135,12 @@ export const EditRow = ({
       rec: isRec,
     };
 
-    dispatch(updateMovements(payload));
+    dispatch(updateMovements(payload))
+      .then((res) => {
+        if (res.error?.message.split(" ").at(-1) === "401")
+          setTriggerRefreshToken(true);
+      })
+      .catch((err) => console.log(err));
 
     setRow(null);
     return;
@@ -142,7 +148,13 @@ export const EditRow = ({
 
   const handleDeleteRow = () => {
     setDeletedRows([...deletedRows, row]);
-    if (isRec) dispatch(deleteMovements(row));
+    if (isRec)
+      dispatch(deleteMovements(row))
+        .then((res) => {
+          if (res.error?.message.split(" ").at(-1) === "401")
+            setTriggerRefreshToken(true);
+        })
+        .catch((err) => console.log(err));
     setRow(null);
     return;
   };
@@ -154,7 +166,18 @@ export const EditRow = ({
       <div className="editRowPage">
         <div className="editRowContainer">
           <div className="closeEditRow" onClick={() => setRow(null)}>
-            x
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 49 49"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.77589 1.81503C6.21379 0.252932 3.68113 0.252931 2.11904 1.81503C0.556938 3.37713 0.556938 5.90979 2.11904 7.47188L19.1472 24.5L2.11904 41.5281C0.556938 43.0902 0.556938 45.6229 2.11904 47.185C3.68113 48.7471 6.21379 48.7471 7.77589 47.185L24.804 30.1569L41.8321 47.185C43.3942 48.7471 45.9269 48.7471 47.489 47.185C49.0511 45.6229 49.0511 43.0902 47.489 41.5281L30.4609 24.5L47.489 7.47188C49.0511 5.90978 49.0511 3.37712 47.489 1.81502C45.9269 0.252927 43.3942 0.252928 41.8321 1.81503L24.804 18.8431L7.77589 1.81503Z"
+                fill="white"
+              />
+            </svg>
           </div>
           <div
             className="editRowFields"

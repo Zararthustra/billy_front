@@ -77,6 +77,10 @@ li {
 
 .secondaryButton {
   background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   border: none;
   color: var(--mauve);
   font-family: var(--text-font);
@@ -88,6 +92,9 @@ li {
 .secondaryButton:hover {
   font-weight: 600;
   text-decoration: underline;
+}
+.secondaryButton:hover svg {
+  stroke: var(--mauve);
 }
 
 /*------------------------------------*/
@@ -116,6 +123,18 @@ li {
 
 .logoutButton:hover {
   fill: red;
+}
+
+.recButton {
+  position: fixed;
+  right: 5rem;
+  top: 1rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.recButton:hover {
+  stroke: var(--mauve);
 }
 
 /*------------------------------------*/

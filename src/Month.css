@@ -1,7 +1,7 @@
 @media (max-width: 900px) {
 
   .monthHead {
-    background: center 32% no-repeat url("./assets/background.png") !important;
+    background: center 25% / 270% no-repeat url("./assets/background.png") !important;
   }
 
   .monthHead h1 {
@@ -22,16 +22,18 @@
   .monthHead h2 {
     font-size: 2.2rem !important;
   }
+
   .monthHead svg {
     width: 30px;
   }
+
   .tableContainer {
     align-items: flex-start !important;
     overflow-x: scroll !important;
   }
 
   .addRowContainer {
-    padding: 2rem !important;
+    padding: 1rem 1rem 3rem !important;
   }
 
   .editRowContainer {
@@ -56,10 +58,12 @@
 .monthHead {
   background: center 27% no-repeat url("./assets/background.png");
   width: 100%;
-  height: 30vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  padding: 5rem 0 3rem;
+  gap: 3rem;
 }
 
 
@@ -84,9 +88,9 @@
   justify-content: center;
   height: 65%;
   border-radius: 5px;
-  padding: 0 1rem;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  padding: 1rem 0;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 
 .monthHead h1 {
@@ -103,7 +107,7 @@
   margin: 0;
   font-family: var(--num-font);
   font-size: 4rem;
-
+  width: 50rem;
   color: white;
 }
 
@@ -239,7 +243,7 @@
 .addRowContainer {
   position: relative;
   margin: 1rem;
-  padding: 2rem 3rem;
+  padding: 2rem 3rem 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -247,8 +251,11 @@
   flex-wrap: wrap;
   border-radius: 15px;
   border: 2px solid var(--mauve);
-  box-shadow: 0 0 50px #4a005815;
+  box-shadow: 0 0 50px #ffffff48;
   z-index: 1;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  background-color: #ffffff2f;
 }
 
 .labelWraper {
@@ -298,7 +305,7 @@
 }
 
 .selectCredOrDeb .cred {
-  background-color: #1DC60150;
+  background-color: #50505034;
   transition: all .5s ease;
 }
 
@@ -307,7 +314,7 @@
 }
 
 .selectCredOrDeb .deb {
-  background-color: #E66C6C50;
+  background-color: #50505034;
   transition: all .5s ease;
 }
 
@@ -316,12 +323,12 @@
 }
 
 .deb.isActive {
-  border: 1px solid #222222;
+  outline: 1px solid #222222;
   background-color: var(--red);
 }
 
 .cred.isActive {
-  border: 1px solid #222222;
+  outline: 1px solid #222222;
   background-color: var(--green);
 }
 
@@ -348,11 +355,12 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #000000be;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2;
+  background-color: #000000be;
+  animation: .2s ease-in-out fadeIn;
 }
 
 .editRowContainer {
@@ -368,6 +376,7 @@
   border-radius: 15px;
   border: 1px solid var(--mauve);
   box-shadow: 0 0 50px #00000050;
+  animation: .2s ease-in-out popFromTop;
 }
 
 .closeEditRow {
@@ -381,10 +390,43 @@
   text-align: center;
   right: -.7rem;
   top: -.7rem;
-  padding: .5rem;
+  padding: .7rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeEditRow:hover {
+  background-color: #ff3232;
 }
 
 .editRowContainer .secondaryButton {
   color: red;
+}
+
+@keyframes popFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-7%);
+  }
+
+  90% {
+    transform: translateY(5%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    background-color: transparent;
+  }
+
+  100% {
+    background-color: #000000be;
+  }
 }

@@ -60,27 +60,39 @@ export const Reconnect = () => {
               fontFamily: "var(--num-font)",
             }}
           >
-            Veuillez vous reconnecter en tant{" "}
-            {["a", "e", "i", "o", "u", "y"].includes(username[0].toLowerCase())
+            Se{" "}
+            <span
+              onClick={reconnect}
+              style={{
+                color: "var(--mauve)",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}
+            >
+              reconnecter
+            </span>{" "}
+            en tant{" "}
+            {["a", "e", "i", "o", "u", "y", "h"].includes(
+              username[0].toLowerCase()
+            )
               ? "qu'"
               : "que "}
-            <span style={{ color: "var(--mauve)", fontWeight: "600" }}>
-              {username}
-            </span>{" "}
-            ou changer d'utilisateur.
+            <strong>{username}</strong> ?
           </p>
           <button className="primaryButton" onClick={reconnect}>
-            Se reconnecter
+            Reconnexion
           </button>
           <button
             className="secondaryButton"
             onClick={logout}
-            style={{ color: "var(--mauve)", 
-            backdropFilter: "blur(5px)",
+            style={{
+              color: "var(--mauve)",
+              backdropFilter: "blur(5px)",
               WebkitBackdropFilter: "blur(5px)",
-            marginTop: "2rem" }}
+              marginTop: "2rem",
+            }}
           >
-            Changer d'utilisateur
+            Déconnexion
           </button>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { createMovements } from "../redux/movementSlice";
-import { Reconnect } from "./Reconnect";
 
 export const AddRow = ({
   month,
@@ -12,6 +11,7 @@ export const AddRow = ({
   newRows,
   setNewRows,
   isRec,
+  setTriggerRefreshToken,
 }) => {
   //___________________________________________________ Variables
 
@@ -23,7 +23,6 @@ export const AddRow = ({
   const [cred, setCred] = useState(null);
   const [value, setValue] = useState("");
   const [libs, setLibs] = useState([]);
-  const [needToRefresh, setNeedToRefresh] = useState(false);
   const dateRef = useRef();
   const libRef = useRef();
   //setNeedToRefresh
@@ -144,7 +143,7 @@ export const AddRow = ({
       dispatch(createMovements(payload))
         .then((res) => {
           if (res.error?.message.split(" ").at(-1) === "401")
-            setNeedToRefresh(true);
+            setTriggerRefreshToken(true);
         })
         .catch((err) => console.log(err));
 
@@ -163,7 +162,6 @@ export const AddRow = ({
 
   return (
     <>
-      {needToRefresh && <Reconnect />}
       <div className="addRowContainer">
         <div className="labelWraper">
           Date
@@ -228,7 +226,7 @@ export const AddRow = ({
             <p
               style={{
                 fontWeight: deb ? "600" : "",
-                color: deb ? "#000" : "#9b9999",
+                color: deb ? "#000" : "#222",
                 cursor: "pointer",
               }}
             >
@@ -243,7 +241,7 @@ export const AddRow = ({
             <p
               style={{
                 fontWeight: cred ? "600" : "",
-                color: cred ? "#000" : "#9b9999",
+                color: cred ? "#000" : "#222",
                 cursor: "pointer",
               }}
             >

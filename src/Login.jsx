@@ -84,7 +84,7 @@ export const Login = ({ setIsAuth }) => {
           />
         </div>
         <input type="submit" className="primaryButton" value="Connexion" />
-        <button className="secondaryButton" onClick={handleRegister}>
+        <button className="secondaryButton" style={{color: 'white'}} onClick={handleRegister}>
           Créer un compte
         </button>
       </form>

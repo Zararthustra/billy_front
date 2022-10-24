@@ -8,15 +8,17 @@ import { Reconnect } from "./components/Reconnect";
 
 export const Recurrences = () => {
   //___________________________________________________ Variables
-  const getSummaryError = useSelector((state) => state.summary.error)
-    ?.split(" ")
-    .at(-1);
+  const getMovementsError401 =
+    useSelector((state) => state.movements.error)
+      ?.split(" ")
+      .at(-1) === "401";
 
   const getAllMovements = useSelector((state) => state.movements.movements);
   const getRecMovements = useSelector(
     (state) => state.movements.movements
   ).filter((item) => item.rec);
 
+  const [triggerRefreshToken, setTriggerRefreshToken] = useState(false);
   const [newRows, setNewRows] = useState([]);
   const [rowToEdit, setRowToEdit] = useState(null);
   const [deletedRows, setDeletedRows] = useState([]);
@@ -28,7 +30,7 @@ export const Recurrences = () => {
     <main className="monthPage">
       {!rowToEdit && <Home />}
       {!rowToEdit && <Logout />}
-      {getSummaryError === "401" && <Reconnect />}
+      {(getMovementsError401 || triggerRefreshToken) && <Reconnect />}
       {rowToEdit && (
         <EditRow
           month={0}
@@ -39,19 +41,21 @@ export const Recurrences = () => {
           setDeletedRows={setDeletedRows}
           libsArray={libsArray}
           isRec={true}
+          setTriggerRefreshToken={setTriggerRefreshToken}
         />
       )}
       <div className="monthHead">
         <h1>Récurrences</h1>
+        <AddRow
+          month={0}
+          year={9999}
+          libsArray={libsArray}
+          newRows={newRows}
+          setNewRows={setNewRows}
+          isRec={true}
+          setTriggerRefreshToken={setTriggerRefreshToken}
+        />
       </div>
-      <AddRow
-        month={0}
-        year={9999}
-        libsArray={libsArray}
-        newRows={newRows}
-        setNewRows={setNewRows}
-        isRec={true}
-      />
       <div
         className="recsContainer"
         style={{

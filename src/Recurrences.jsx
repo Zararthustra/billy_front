@@ -5,6 +5,7 @@ import { useState } from "react";
 import { EditRow } from "./components/EditRow";
 import { AddRow } from "./components/AddRow";
 import { Reconnect } from "./components/Reconnect";
+import { Loader } from "./components/Loader";
 
 export const Recurrences = () => {
   //___________________________________________________ Variables
@@ -13,6 +14,7 @@ export const Recurrences = () => {
       ?.split(" ")
       .at(-1) === "401";
 
+  const getMovementsStatus = useSelector((state) => state.movements.status); // TODO LOADER
   const getAllMovements = useSelector((state) => state.movements.movements);
   const getRecMovements = useSelector(
     (state) => state.movements.movements
@@ -24,7 +26,6 @@ export const Recurrences = () => {
   const [deletedRows, setDeletedRows] = useState([]);
   const libsArray = [...new Set(getAllMovements.map((item) => item.lib))];
 
-  //___________________________________________________ Functions
   //___________________________________________________ Render
   return (
     <main className="monthPage">
@@ -66,71 +67,75 @@ export const Recurrences = () => {
           justifyContent: "space-evenly",
         }}
       >
-        {getRecMovements.map((item, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() =>
-                !deletedRows.map((item) => item.id).includes(item.id) &&
-                setRowToEdit(item)
-              }
-              className={
-                deletedRows.map((item) => item.id).includes(item.id)
-                  ? "recurrence temporaryDelRow"
-                  : "recurrence"
-              }
-              style={{
-                display: deletedRows.map((item) => item.id).includes(item.id)
-                  ? "none"
-                  : "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                justifyContent: "center",
-                gap: "3rem",
-                padding: "2rem",
-                borderRadius: "5px",
-                margin: "1rem",
-                width: "17rem",
-                cursor: "pointer",
-              }}
-            >
+        {getMovementsStatus === "loading" ? (
+          <Loader />
+        ) : (
+          getRecMovements.map((item, index) => {
+            return (
               <div
-                className="recDetails"
+                key={index}
+                onClick={() =>
+                  !deletedRows.map((item) => item.id).includes(item.id) &&
+                  setRowToEdit(item)
+                }
+                className={
+                  deletedRows.map((item) => item.id).includes(item.id)
+                    ? "recurrence temporaryDelRow"
+                    : "recurrence"
+                }
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: deletedRows.map((item) => item.id).includes(item.id)
+                    ? "none"
+                    : "flex",
                   alignItems: "center",
+                  flexDirection: "column",
                   justifyContent: "center",
-                  gap: ".7rem",
-                  fontWeight: "600",
+                  gap: "3rem",
+                  padding: "2rem",
+                  borderRadius: "5px",
+                  margin: "1rem",
+                  width: "17rem",
+                  cursor: "pointer",
                 }}
               >
                 <div
-                  className="recTitles"
+                  className="recDetails"
                   style={{
-                    fontSize: "2rem",
-                    maxWidth: "15rem",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    marginBottom: "1rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: ".7rem",
+                    fontWeight: "600",
                   }}
                 >
-                  {item.lib}
+                  <div
+                    className="recTitles"
+                    style={{
+                      fontSize: "2rem",
+                      maxWidth: "15rem",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    {item.lib}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "1.5rem",
+                      color: item.value < 0 ? "var(--red)" : "var(--green)",
+                    }}
+                  >
+                    {Math.abs(item.value)} €
+                  </div>
+                  <div>Tous les {item.day}</div>
                 </div>
-                <div
-                  style={{
-                    fontSize: "1.5rem",
-                    color: item.value < 0 ? "var(--red)" : "var(--green)",
-                  }}
-                >
-                  {Math.abs(item.value)} €
-                </div>
-                <div>Tous les {item.day}</div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </main>
   );

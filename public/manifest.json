@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Billy",
+  "name": "Un gestionnaire de compte.",
   "icons": [
     {
       "src": "favicon.ico",

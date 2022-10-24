@@ -7,6 +7,7 @@ import { getLocalStorage } from "./utils/localStorage";
 import { createMovements } from "./redux/movementSlice";
 import { Reconnect } from "./components/Reconnect";
 import { RecIcon } from "./components/RecIcon";
+import { Loader } from "./components/Loader";
 
 export const Summary = () => {
   //___________________________________________________ Variables
@@ -93,31 +94,29 @@ export const Summary = () => {
           Nouveau mois
         </button>
       </div>
-      {getYears.map((year, index) => {
-        const months = getSummary
-          .filter((item) => item.year === year)
-          .map((item) => {
-            lastMonth = item.month;
-            return item.month;
-          });
-        const solds = getSummary
-          .filter((item) => item.year === year)
-          .map((item) => {
-            lastSold = item.sold;
-            return item.sold;
-          });
-        return (
-          <div key={index} className="yearContainer">
-            {getSummaryStatus === "loading" ? (
-              <>Loading...</>
-            ) : (
-              getSummaryStatus === "succeeded" && (
-                <CollapsableYear months={months} year={year} solds={solds} />
-              )
-            )}
-          </div>
-        );
-      })}
+      {getSummaryStatus === "loading" ? (
+        <Loader />
+      ) : (
+        getYears.map((year, index) => {
+          const months = getSummary
+            .filter((item) => item.year === year)
+            .map((item) => {
+              lastMonth = item.month;
+              return item.month;
+            });
+          const solds = getSummary
+            .filter((item) => item.year === year)
+            .map((item) => {
+              lastSold = item.sold;
+              return item.sold;
+            });
+          return (
+            <div key={index} className="yearContainer">
+              <CollapsableYear months={months} year={year} solds={solds} />
+            </div>
+          );
+        })
+      )}
     </main>
   );
 };

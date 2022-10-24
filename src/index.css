@@ -93,6 +93,7 @@ li {
   font-weight: 600;
   text-decoration: underline;
 }
+
 .secondaryButton:hover svg {
   stroke: var(--mauve);
 }
@@ -135,6 +136,63 @@ li {
 
 .recButton:hover {
   stroke: var(--mauve);
+}
+
+
+/*------------------------------------*/
+/*
+ * Loader
+**/
+
+
+/* arrow */
+.loader path:first-child {
+  fill: var(--orange);
+  transform-origin: 50%;
+  left: 1rem;
+  top: 0;
+  animation: 2s ease-in-out arrow infinite;
+}
+
+/* lines */
+.loader path:last-child {
+  left: 0;
+  top: 0;
+  fill: var(--orange);
+  animation: 2s ease-in-out lines infinite;
+}
+
+@keyframes arrow {
+  0% {
+    transform: rotate(0);
+    fill: var(--orange);
+  }
+
+  50% {
+    fill: var(--mauve);
+  }
+
+  100% {
+    transform: rotate(-1080deg);
+    fill: var(--orange);
+  }
+}
+
+@keyframes lines {
+  0% {
+    fill: var(--orange);
+    transform: translateX(0);
+  }
+
+  50% {
+    fill: var(--mauve);
+    transform: translateX(-100%);
+  }
+
+  100% {
+    fill: var(--orange);
+    transform: translateX(0);
+  }
 }
 
 /*------------------------------------*/

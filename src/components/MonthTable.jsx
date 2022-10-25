@@ -121,16 +121,25 @@ export const MonthTable = ({
                           }}
                           {...cell.getCellProps()}
                         >
-                          {catchValue < 0 ? catchValue * -1 : catchValue.toLocaleString()}
+                          {catchValue < 0
+                            ? catchValue * -1
+                            : catchValue.toLocaleString()}
                         </td>
                       );
                     }
                     if (cell.column.id === "sold") {
-                      incrementedSoldes += catchValue;
+                      if (
+                        !deletedRows
+                          .map((item) => item.id)
+                          .includes(row.original.id)
+                      )
+                        incrementedSoldes += catchValue;
                       return (
                         <td {...cell.getCellProps()}>
                           {incrementedSoldes % 1 !== 0
-                            ? parseFloat(incrementedSoldes.toFixed(2)).toLocaleString()
+                            ? parseFloat(
+                                incrementedSoldes.toFixed(2)
+                              ).toLocaleString()
                             : incrementedSoldes.toLocaleString()}
                         </td>
                       );

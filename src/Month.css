@@ -89,11 +89,15 @@
   height: 65%;
   border-radius: 5px;
   padding: 1rem 0;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  /* backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px); */
 }
 
 .monthHead h1 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   margin: 0;
   font-size: 5rem;
   background: linear-gradient(60deg, #be46f6 0%, #be46f6 20%, #3500a6 100%);

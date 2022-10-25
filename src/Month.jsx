@@ -14,6 +14,7 @@ import CountUp from "react-countup";
 import { Reconnect } from "./components/Reconnect";
 import { RecIcon } from "./components/RecIcon";
 import { Loader } from "./components/Loader";
+import { Toaster } from "./components/Toaster";
 
 export const Month = () => {
   //___________________________________________________ Variables
@@ -51,6 +52,7 @@ export const Month = () => {
       ?.split(" ")
       .at(-1) === "401";
 
+  const [triggerToaster, setTriggerToaster] = useState(null);
   const [rowToEdit, setRowToEdit] = useState(null);
   const [monthSold, setMonthSold] = useState(getMonthSummary.sold);
   const [newRows, setNewRows] = useState([]);
@@ -105,9 +107,6 @@ export const Month = () => {
   };
 
   const saveMonth = () => {
-    if (getMonthSummary.sold !== monthSold)
-      dispatch(updateSummary({ id: getMonthSummary.id, sold: monthSold }));
-
     if (newRows.length > 0)
       newRows.map((item) => dispatch(createMovements(item)));
 
@@ -125,7 +124,27 @@ export const Month = () => {
       );
     }
 
-    // setSaved(true); // TODO add toaster here
+    if (getMonthSummary.sold !== monthSold) {
+      dispatch(updateSummary({ id: getMonthSummary.id, sold: monthSold })).then(
+        (res) => {
+          if (res.error?.message.split(" ").at(-1) === "401")
+            setTriggerToaster({
+              type: "error",
+              message: res.error?.message,
+            });
+          else
+            setTriggerToaster({
+              type: "success",
+              message: "Modifications enregistrées avec succès !",
+            });
+        }
+      );
+    } else
+      setTriggerToaster({
+        type: "info",
+        message: "Il n'y a rien à enregistrer.",
+      });
+
     setNewRows([]);
     setDeletedRows([]);
   };
@@ -136,6 +155,13 @@ export const Month = () => {
       {!rowToEdit && <Home />}
       {!rowToEdit && <Logout />}
       {!rowToEdit && <RecIcon />}
+      {triggerToaster && (
+        <Toaster
+          type={triggerToaster.type}
+          message={triggerToaster.message}
+          setTriggerToaster={setTriggerToaster}
+        />
+      )}
       {(getMovementsError401 || getSummaryError401) && <Reconnect />}
       {rowToEdit && (
         <EditRow
@@ -147,6 +173,7 @@ export const Month = () => {
           setDeletedRows={setDeletedRows}
           libsArray={libsArray}
           isRec={false}
+          setTriggerToaster={setTriggerToaster}
         />
       )}
       <div className="monthHead">
@@ -222,7 +249,25 @@ export const Month = () => {
           newRows={newRows}
           setNewRows={setNewRows}
           isRec={false}
+          setTriggerToaster={setTriggerToaster}
         />
+      </div>
+      <div className="monthButton">
+        <button className="primaryButton" onClick={saveMonth}>
+          <svg
+            width="35"
+            height="35"
+            viewBox="0 0 30 30"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M25.9781 8.70936L21.2906 4.02186C21.203 3.93497 21.0991 3.86623 20.9849 3.81957C20.8707 3.77292 20.7484 3.74927 20.625 3.74999H5.625C5.12772 3.74999 4.65081 3.94753 4.29917 4.29916C3.94754 4.65079 3.75 5.1277 3.75 5.62499V24.375C3.75 24.8723 3.94754 25.3492 4.29917 25.7008C4.65081 26.0524 5.12772 26.25 5.625 26.25H24.375C24.8723 26.25 25.3492 26.0524 25.7008 25.7008C26.0525 25.3492 26.25 24.8723 26.25 24.375V9.37498C26.2507 9.2516 26.2271 9.1293 26.1804 9.01507C26.1338 8.90085 26.065 8.79696 25.9781 8.70936ZM11.25 5.62499H18.75V9.37498H11.25V5.62499ZM18.75 24.375H11.25V16.875H18.75V24.375ZM20.625 24.375V16.875C20.625 16.3777 20.4275 15.9008 20.0758 15.5492C19.7242 15.1975 19.2473 15 18.75 15H11.25C10.7527 15 10.2758 15.1975 9.92417 15.5492C9.57254 15.9008 9.375 16.3777 9.375 16.875V24.375H5.625V5.62499H9.375V9.37498C9.375 9.87227 9.57254 10.3492 9.92417 10.7008C10.2758 11.0524 10.7527 11.25 11.25 11.25H18.75C19.2473 11.25 19.7242 11.0524 20.0758 10.7008C20.4275 10.3492 20.625 9.87227 20.625 9.37498V6.00936L24.375 9.75936V24.375H20.625Z"
+              fill="white"
+            />
+          </svg>
+          Enregistrer
+        </button>
       </div>
       {getMovementsStatus === "loading" ? (
         <Loader />
@@ -238,14 +283,32 @@ export const Month = () => {
               deletedRows={deletedRows}
             />
           </div>
-          <button className="primaryButton" onClick={saveMonth}>
-            Enregistrer
-          </button>
-          <button className="secondaryButton" onClick={printTable}>
-            Générer un PDF
-          </button>
         </>
       )}
+      <button
+        className="primaryButton"
+        onClick={printTable}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          padding: "0 1rem",
+        }}
+      >
+        <svg
+          width="35"
+          height="35"
+          viewBox="0 0 30 30"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.5654 16.8281L15.5742 16.7871C15.7441 16.0869 15.958 15.2139 15.791 14.4229C15.6797 13.7988 15.2197 13.5557 14.8271 13.5381C14.3643 13.5176 13.9512 13.7812 13.8486 14.165C13.6553 14.8682 13.8281 15.8291 14.1445 17.0537C13.7461 18.0029 13.1104 19.3828 12.6445 20.2031C11.7773 20.6514 10.6143 21.3428 10.4414 22.2158C10.4062 22.377 10.4473 22.582 10.5439 22.7666C10.6523 22.9717 10.8252 23.1299 11.0273 23.2061C11.1152 23.2383 11.2207 23.2646 11.3438 23.2646C11.8594 23.2646 12.6943 22.8486 13.8076 20.9385C13.9775 20.8828 14.1533 20.8242 14.3232 20.7656C15.1201 20.4961 15.9463 20.2148 16.6934 20.0889C17.5195 20.5313 18.46 20.8154 19.0986 20.8154C19.7314 20.8154 19.9805 20.4404 20.0742 20.2148C20.2383 19.8193 20.1592 19.3213 19.8926 19.0547C19.5059 18.6738 18.5654 18.5742 17.1006 18.7559C16.3799 18.3164 15.9082 17.7188 15.5654 16.8281ZM12.3516 21.2783C11.9443 21.8701 11.6367 22.166 11.4697 22.2949C11.666 21.9346 12.0498 21.5537 12.3516 21.2783ZM14.918 14.3789C15.0703 14.6396 15.0498 15.4277 14.9326 15.8262C14.7891 15.2432 14.7686 14.417 14.8535 14.3203C14.877 14.3232 14.8975 14.3408 14.918 14.3789ZM14.8711 17.9092C15.1846 18.4512 15.5801 18.917 16.0166 19.2627C15.3838 19.4063 14.8066 19.6436 14.291 19.8545C14.168 19.9043 14.0479 19.9541 13.9307 20.001C14.3203 19.2949 14.6455 18.4951 14.8711 17.9092V17.9092ZM19.4297 19.8281C19.4326 19.834 19.4355 19.8428 19.418 19.8545H19.4121L19.4063 19.8633C19.3828 19.8779 19.1426 20.0186 18.1084 19.6113C19.2979 19.5557 19.4268 19.8252 19.4297 19.8281V19.8281ZM25.0371 8.45508L18.7324 2.15039C18.5566 1.97461 18.3193 1.875 18.0703 1.875H5.625C5.10645 1.875 4.6875 2.29395 4.6875 2.8125V27.1875C4.6875 27.7061 5.10645 28.125 5.625 28.125H24.375C24.8936 28.125 25.3125 27.7061 25.3125 27.1875V9.12012C25.3125 8.87109 25.2129 8.63086 25.0371 8.45508V8.45508ZM23.1504 9.55078H17.6367V4.03711L23.1504 9.55078ZM23.2031 26.0156H6.79688V3.98438H15.6445V10.3125C15.6445 10.6388 15.7742 10.9518 16.0049 11.1826C16.2357 11.4133 16.5487 11.543 16.875 11.543H23.2031V26.0156Z"
+            fill="white"
+          />
+        </svg>
+        Générer un PDF
+      </button>
     </main>
   );
 };

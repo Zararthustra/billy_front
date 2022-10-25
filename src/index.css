@@ -273,3 +273,33 @@ input[type="checkbox"] {
 .recurrence:hover:not(.temporaryDelRow) .recTitles {
   color: var(--mauve);
 }
+
+/*------------------------------------*/
+
+.toaster {
+  animation: 7s ease-in-out dropDownToaster;
+}
+
+@keyframes dropDownToaster {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  7% {
+    transform: translateY(10%);
+  }
+
+  12% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

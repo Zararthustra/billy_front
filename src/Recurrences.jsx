@@ -6,6 +6,7 @@ import { EditRow } from "./components/EditRow";
 import { AddRow } from "./components/AddRow";
 import { Reconnect } from "./components/Reconnect";
 import { Loader } from "./components/Loader";
+import { Toaster } from "./components/Toaster";
 
 export const Recurrences = () => {
   //___________________________________________________ Variables
@@ -14,12 +15,13 @@ export const Recurrences = () => {
       ?.split(" ")
       .at(-1) === "401";
 
-  const getMovementsStatus = useSelector((state) => state.movements.status); // TODO LOADER
+  const getMovementsStatus = useSelector((state) => state.movements.status);
   const getAllMovements = useSelector((state) => state.movements.movements);
   const getRecMovements = useSelector(
     (state) => state.movements.movements
   ).filter((item) => item.rec);
 
+  const [triggerToaster, setTriggerToaster] = useState(null);
   const [triggerRefreshToken, setTriggerRefreshToken] = useState(false);
   const [newRows, setNewRows] = useState([]);
   const [rowToEdit, setRowToEdit] = useState(null);
@@ -31,6 +33,13 @@ export const Recurrences = () => {
     <main className="monthPage">
       {!rowToEdit && <Home />}
       {!rowToEdit && <Logout />}
+      {triggerToaster && (
+        <Toaster
+          type={triggerToaster.type}
+          message={triggerToaster.message}
+          setTriggerToaster={setTriggerToaster}
+        />
+      )}
       {(getMovementsError401 || triggerRefreshToken) && <Reconnect />}
       {rowToEdit && (
         <EditRow
@@ -43,6 +52,7 @@ export const Recurrences = () => {
           libsArray={libsArray}
           isRec={true}
           setTriggerRefreshToken={setTriggerRefreshToken}
+          setTriggerToaster={setTriggerToaster}
         />
       )}
       <div className="monthHead">
@@ -55,6 +65,7 @@ export const Recurrences = () => {
           setNewRows={setNewRows}
           isRec={true}
           setTriggerRefreshToken={setTriggerRefreshToken}
+          setTriggerToaster={setTriggerToaster}
         />
       </div>
       <div

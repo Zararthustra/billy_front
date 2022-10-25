@@ -12,6 +12,7 @@ export const AddRow = ({
   setNewRows,
   isRec,
   setTriggerRefreshToken,
+  setTriggerToaster,
 }) => {
   //___________________________________________________ Variables
 
@@ -117,7 +118,20 @@ export const AddRow = ({
   };
 
   const handleAddRow = () => {
-    if (deb === null || cred === null || !day || lib === "") return;
+    if (deb === null || cred === null || !day || lib === "") {
+      return setTriggerToaster({
+        type: "error",
+        message: !day
+          ? "Veuillez choisir une date."
+          : lib === ""
+          ? "Veuillez fournir un libellé."
+          : value === ""
+          ? "Veuillez mettre un montant."
+          : deb === null || cred === null
+          ? 'Veuillez choisir "Débit" ou "Crédit".'
+          : "",
+      });
+    }
     const payload = {
       year,
       month,
@@ -136,16 +150,34 @@ export const AddRow = ({
           item.value === payload.value
       ).length > 0;
 
-    if (containsDuplicateRow) return; // add toast error
+    if (containsDuplicateRow)
+      return setTriggerToaster({
+        type: "error",
+        message: "Cette récurrence existe déjà",
+      });
 
     setNewRows([...newRows, payload]);
     if (isRec)
       dispatch(createMovements(payload))
         .then((res) => {
-          if (res.error?.message.split(" ").at(-1) === "401")
+          if (res.error?.message.split(" ").at(-1) === "401") {
+            setTriggerToaster({
+              type: "error",
+              message: res.error?.message,
+            });
             setTriggerRefreshToken(true);
+          } else
+            setTriggerToaster({
+              type: "success",
+              message: "Récurrence ajoutée avec succès !",
+            });
         })
         .catch((err) => console.log(err));
+    else
+      setTriggerToaster({
+        type: "info",
+        message: "Cette ligne sera ajoutée lorsque vous aurez enregistré.",
+      });
 
     // Clear inputs
     dateRef.current.clearValue();

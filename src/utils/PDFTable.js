@@ -90,7 +90,7 @@ export const PDFTable = (movements, year, month, lastMonthSummary) => {
           <td>
             {getMonth(lastMonth)}
             <br />
-            {parseFloat(lastMonthSummary.sold).toLocaleString() || 0} €
+            {parseFloat(lastMonthSummary.sold || 0).toLocaleString() || 0} €
           </td>
         </tr>
         {sortedMovements.map((item, index) => {

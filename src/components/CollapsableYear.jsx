@@ -30,10 +30,11 @@ export const CollapsableYear = ({ months, year, solds }) => {
           <path
             d={collapse ? "M2 2L12 12L2 22" : "M22 2L12 12L2 2"}
             strokeWidth="5"
-            strokeLinecap="round"
+          stroke={collapse ? "" : "var(--orange)"}
+          strokeLinecap="round"
           />
         </svg>
-        <h3>{year}</h3>
+        <h3 style={{color: collapse ? "" : "var(--orange)"}}>{year}</h3>
         <span></span>
       </div>
       {!collapse && (
@@ -47,7 +48,10 @@ export const CollapsableYear = ({ months, year, solds }) => {
               >
                 <div>{getMonth(month)}</div>
                 <div className="monthSolde">
-                  {solds[idx] % 1 !== 0 ? parseFloat(solds[idx]?.toFixed(2)).toLocaleString() : solds[idx].toLocaleString()} €
+                  {solds[idx] % 1 !== 0
+                    ? parseFloat(solds[idx]?.toFixed(2)).toLocaleString()
+                    : solds[idx].toLocaleString()}{" "}
+                  €
                 </div>
               </li>
             );

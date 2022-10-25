@@ -14,6 +14,7 @@ export const EditRow = ({
   libsArray,
   isRec,
   setTriggerRefreshToken,
+  setTriggerToaster,
 }) => {
   //___________________________________________________ Variables
   const dispatch = useDispatch();
@@ -135,12 +136,31 @@ export const EditRow = ({
       rec: isRec,
     };
 
-    dispatch(updateMovements(payload))
-      .then((res) => {
-        if (res.error?.message.split(" ").at(-1) === "401")
-          setTriggerRefreshToken(true);
-      })
-      .catch((err) => console.log(err));
+    if (
+      payload.day === row.day &&
+      payload.lib === row.lib &&
+      payload.value === row.value
+    )
+      setTriggerToaster({
+        type: "info",
+        message: "Rien n'a été modifié.",
+      });
+    else
+      dispatch(updateMovements(payload))
+        .then((res) => {
+          if (res.error?.message.split(" ").at(-1) === "401") {
+            setTriggerToaster({
+              type: "error",
+              message: res.error?.message,
+            });
+            setTriggerRefreshToken(true);
+          } else
+            setTriggerToaster({
+              type: "success",
+              message: "Ligne modifiée avec succès !",
+            });
+        })
+        .catch((err) => console.log(err));
 
     setRow(null);
     return;
@@ -151,10 +171,24 @@ export const EditRow = ({
     if (isRec)
       dispatch(deleteMovements(row))
         .then((res) => {
-          if (res.error?.message.split(" ").at(-1) === "401")
+          if (res.error?.message.split(" ").at(-1) === "401") {
+            setTriggerToaster({
+              type: "error",
+              message: res.error?.message,
+            });
             setTriggerRefreshToken(true);
+          } else
+            setTriggerToaster({
+              type: "success",
+              message: "Ligne supprimée avec succès !",
+            });
         })
         .catch((err) => console.log(err));
+    else
+      setTriggerToaster({
+        type: "info",
+        message: "Cette ligne sera supprimée lorsque vous aurez enregistré.",
+      });
     setRow(null);
     return;
   };

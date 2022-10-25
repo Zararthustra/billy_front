@@ -36,12 +36,18 @@
 }
 
 .summaryHead h1 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   opacity: 100%;
-  font-size: 7rem;
   background: linear-gradient(60deg, #be46f6 0%, #be46f6 20%, #3500a6 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 5px;
+  max-width: 30rem;
+  text-align: center;
+  word-wrap: break-word;
   animation: .5s ease-in-out fadeInn;
 }
 
@@ -77,6 +83,10 @@
 .collapseDiv:hover svg {
   color: var(--orange);
   stroke: var(--orange);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .collapseDiv svg {
@@ -111,6 +121,9 @@
   width: 80%;
   max-width: 40rem;
   gap: 1rem;
+}
+
+.monthsContainer li {
   animation: .5s dropDown ease;
 }
 
@@ -158,18 +171,21 @@
   font-family: var(--num-font);
 }
 
-.summaryButton {
+.summaryButton,
+.monthButton {
   position: relative;
   width: 100%;
   margin-bottom: 2rem;
 }
 
-.summaryButton .primaryButton {
+.summaryButton .primaryButton,
+.monthButton .primaryButton {
   position: absolute;
   right: 2rem;
   top: -4.5rem;
   display: flex;
   justify-content: center;
+  padding: 1rem;
   align-items: center;
   gap: 1rem;
   animation: .5s ease-in-out slideInFromRight;

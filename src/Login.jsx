@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { createUser, getTokenUser } from "./redux/userSlice";
 import { saveLocalStorage } from "./utils/localStorage";
 import jwt_decode from "jwt-decode";
+import { Toaster } from "./components/Toaster";
 
 export const Login = ({ setIsAuth }) => {
   //___________________________________________________ Variables
@@ -10,13 +11,16 @@ export const Login = ({ setIsAuth }) => {
 
   const [username, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [triggerToaster, setTriggerToaster] = useState(null);
 
   //___________________________________________________ Functions
 
   const handleChange = (e) => {
+    console.log(e.target.value.trim().toLowerCase());
+    if (e.target.value.length > 20) return;
     switch (e.target.name) {
       case "username":
-        return setName(e.target.value.trim());
+        return setName(e.target.value.trim().toLowerCase());
       case "password":
         return setPassword(e.target.value.trim());
       default:
@@ -49,16 +53,54 @@ export const Login = ({ setIsAuth }) => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if (!username)
+      return setTriggerToaster({
+        type: "error",
+        message: "Veuillez entrer un nom de compte.",
+      });
+    if (!password)
+      return setTriggerToaster({
+        type: "error",
+        message: "Veuillez entrer un mot de passe.",
+      });
+
     dispatch(
       createUser({
         username,
         password,
       })
-    ); // Toasters error & success
+    )
+      .then((res) => {
+        if (res.error?.message.split(" ").at(-1) === "401")
+          setTriggerToaster({
+            type: "error",
+            message: res.error?.message,
+          });
+        else if (res.error?.message.split(" ").at(-1) === "400")
+          setTriggerToaster({
+            type: "error",
+            message: "Ce nom de compte existe déjà.",
+          });
+        else {
+          setTriggerToaster({
+            type: "success",
+            message:
+              'Votre compte a été créé avec succès ! Cliquez sur "Connexion" pour continuer.',
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
   //___________________________________________________ Render
   return (
     <main className="loginPage">
+      {triggerToaster && (
+        <Toaster
+          type={triggerToaster.type}
+          message={triggerToaster.message}
+          setTriggerToaster={setTriggerToaster}
+        />
+      )}
       <h1>Billy</h1>
       <form className="loginBubble" onSubmit={handleLogin}>
         <div className="inputLabel">
@@ -84,7 +126,11 @@ export const Login = ({ setIsAuth }) => {
           />
         </div>
         <input type="submit" className="primaryButton" value="Connexion" />
-        <button className="secondaryButton" style={{color: 'white'}} onClick={handleRegister}>
+        <button
+          className="secondaryButton"
+          style={{ color: "white" }}
+          onClick={handleRegister}
+        >
           Créer un compte
         </button>
       </form>

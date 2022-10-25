@@ -8,6 +8,8 @@ import { createMovements } from "./redux/movementSlice";
 import { Reconnect } from "./components/Reconnect";
 import { RecIcon } from "./components/RecIcon";
 import { Loader } from "./components/Loader";
+import { Toaster } from "./components/Toaster";
+import { useState } from "react";
 
 export const Summary = () => {
   //___________________________________________________ Variables
@@ -31,25 +33,17 @@ export const Summary = () => {
   let getYears = getSummary
     .map((summary) => summary.year)
     .filter((year, index, years) => years.indexOf(year) === index);
+  const [triggerToaster, setTriggerToaster] = useState(null);
 
   //___________________________________________________ Functions
 
   const createNewMonth = () => {
     const newMonth =
-      lastMonth === 12 ? 1 : lastMonth + 1 || new Date().getMonth();
+      lastMonth === 12 ? 1 : lastMonth + 1 || new Date().getMonth() + 1;
     const newYear =
       newMonth === 1
         ? getYears.at(-1) + 1
         : getYears.at(-1) || new Date().getFullYear();
-
-    dispatch(
-      createSummary({
-        year: newYear,
-        month: newMonth,
-        sold: lastSold,
-      })
-    );
-
     const duplicatedRecs = getRecMovements.map((item) => {
       return {
         year: newYear,
@@ -62,9 +56,25 @@ export const Summary = () => {
       };
     });
 
-    duplicatedRecs.map((item) => dispatch(createMovements(item)));
-
-    navigate(`/${newYear}/${newMonth}`);
+    dispatch(
+      createSummary({
+        year: newYear,
+        month: newMonth,
+        sold: lastSold,
+      })
+    )
+      .then((res) => {
+        if (res.error?.message.split(" ").at(-1) === "401")
+          setTriggerToaster({
+            type: "error",
+            message: res.error?.message,
+          });
+        else {
+          duplicatedRecs.map((item) => dispatch(createMovements(item)));
+          navigate(`/${newYear}/${newMonth}`);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   //___________________________________________________ Render
@@ -73,9 +83,16 @@ export const Summary = () => {
     <main className="summaryPage">
       <Logout />
       <RecIcon />
+      {triggerToaster && (
+        <Toaster
+          type={triggerToaster.type}
+          message={triggerToaster.message}
+          setTriggerToaster={setTriggerToaster}
+        />
+      )}
       {getSummaryError === "401" && <Reconnect />}
       <div className="summaryHead">
-        <h1>{getUsername}</h1>
+        <h1 style={{fontSize: getUsername.length > 10 ? "3rem" :"7rem"}}>{getUsername}</h1>
       </div>
       <div className="summaryButton">
         <button className="primaryButton" onClick={createNewMonth}>

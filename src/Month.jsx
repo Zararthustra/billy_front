@@ -46,7 +46,7 @@ export const Month = () => {
   const getMonthMovements = getAllMovements.filter(
     (item) => item.year === yearParam && item.month === monthParam
   );
-  const getMovementsStatus = useSelector((state) => state.movements.status); // TODO LOADER
+  const getMovementsStatus = useSelector((state) => state.movements.status);
   const getMovementsError401 =
     useSelector((state) => state.movements.error)
       ?.split(" ")
@@ -178,6 +178,19 @@ export const Month = () => {
       )}
       <div className="monthHead">
         <div className="monthHeadTitle">
+          <h3
+            style={{
+              position: "absolute",
+              left: "5rem",
+              top: "-.2rem",
+              fontWeight: "600",
+              fontSize: "1.5rem",
+              fontFamily: "var(--num-font)",
+              color: "#6d6d6dc7",
+            }}
+          >
+            {yearParam}
+          </h3>
           <h1>{month}</h1>
           <div
             style={{

@@ -16,7 +16,6 @@ export const Login = ({ setIsAuth }) => {
   //___________________________________________________ Functions
 
   const handleChange = (e) => {
-    console.log(e.target.value.trim().toLowerCase());
     if (e.target.value.length > 20) return;
     switch (e.target.name) {
       case "username":
@@ -38,7 +37,11 @@ export const Login = ({ setIsAuth }) => {
       })
     )
       .then((user) => {
-        if (user.meta.requestStatus === "rejected") return; // 401 toaster
+        if (user.error?.message.split(" ").at(-1) === "401")
+          return setTriggerToaster({
+            type: "error",
+            message: "Compte inconnu.",
+          });
         const decoded = jwt_decode(user.payload.access);
         saveLocalStorage("username", username);
         saveLocalStorage("userid", decoded.user_id);

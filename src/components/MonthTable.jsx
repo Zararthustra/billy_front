@@ -21,10 +21,6 @@ export const MonthTable = ({
 
   let data = movements;
 
-  useEffect(() => {
-    setMonthSold(incrementedSoldes);
-  });
-
   //___________________________________________________ Functions
 
   const table = useTable(
@@ -46,7 +42,14 @@ export const MonthTable = ({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     table;
 
+  //___________________________________________________ Lifecycle
+
+  useEffect(() => {
+    setMonthSold(incrementedSoldes);
+  }, [incrementedSoldes, setMonthSold, table.data]);
+
   //___________________________________________________ Render
+
   return (
     <table {...getTableProps()}>
       <thead>

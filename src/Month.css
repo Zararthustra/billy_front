@@ -188,6 +188,10 @@
 
 /* head */
 .monthPage table th {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   padding: 1rem;
   font-size: 1.2rem;
   text-align: center;

@@ -1,6 +1,6 @@
 @media (max-width: 600px) {
   .summaryHead h1 {
-    font-size: 3rem !important;
+    font-size: 10vw !important;
   }
 
   .summaryButton .primaryButton {
@@ -45,7 +45,6 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 5px;
-  max-width: 30rem;
   text-align: center;
   word-wrap: break-word;
   animation: .5s ease-in-out fadeInn;

@@ -16,7 +16,7 @@ export const Login = ({ setIsAuth }) => {
   //___________________________________________________ Functions
 
   const handleChange = (e) => {
-    if (e.target.value.length > 20) return;
+    if (e.target.value.length > 10) return;
     switch (e.target.name) {
       case "username":
         return setName(e.target.value.trim().toLowerCase());

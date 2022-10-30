@@ -97,7 +97,11 @@ export const EditRow = ({
     if (event) setLib(event.value);
   };
   const handleCreateLib = (val) => {
-    if (val.length > 35) return; //add toast error message
+    if (val.length > 35)
+      return setTriggerToaster({
+        type: "error",
+        message: "Libellé trop long. 35 caractères maximum.",
+      });
     setLibs([...libs, { value: val, label: val }]);
   };
 

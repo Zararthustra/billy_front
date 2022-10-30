@@ -26,7 +26,7 @@ export const AddRow = ({
   const [libs, setLibs] = useState([]);
   const dateRef = useRef();
   const libRef = useRef();
-  //setNeedToRefresh
+
   const selectDateStyle = {
     singleValue: (base, state) => ({
       ...base,
@@ -91,7 +91,11 @@ export const AddRow = ({
     if (event) setLib(event.value);
   };
   const handleCreateLib = (val) => {
-    // if (val.length > 35) return; //add toast error message
+    if (val.length > 35)
+      return setTriggerToaster({
+        type: "error",
+        message: "Libellé trop long. 35 caractères maximum.",
+      });
     setLibs([...libs, { value: val, label: val }]);
   };
 
@@ -124,9 +128,9 @@ export const AddRow = ({
         message: !day
           ? "Veuillez choisir une date."
           : lib === ""
-          ? "Veuillez fournir un libellé."
+          ? "Veuillez selectionner un libellé."
           : value === ""
-          ? "Veuillez mettre un montant."
+          ? "Veuillez écrire un montant."
           : deb === null || cred === null
           ? 'Veuillez choisir "Débit" ou "Crédit".'
           : "",

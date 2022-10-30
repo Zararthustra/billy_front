@@ -55,7 +55,6 @@ export const updateSummary = createAsyncThunk(
 export const deleteSummary = createAsyncThunk(
   "summary/deleteSummary",
   async (summaryId) => {
-    console.log(summaryId);
     const response = await axios.delete(URL + "/" + summaryId, authHeader());
     return response.data;
   }
@@ -108,7 +107,6 @@ export const summarySlice = createSlice({
       })
       .addCase(deleteSummary.fulfilled, (state, action) => {
         state.status = "succeeded";
-        console.log(action.meta.arg);
         state.summary = state.summary.filter(
           (item) => item.id !== action.meta.arg
         );

@@ -6,6 +6,10 @@
   .summaryButton .primaryButton {
     right: none !important;
   }
+
+  .monthRow {
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 900px) {

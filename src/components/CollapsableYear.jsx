@@ -2,15 +2,20 @@ import { getMonth } from "../utils/getMonth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveLocalStorage } from "../utils/localStorage";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteSummary } from "../redux/summarySlice";
+import { useSelector } from "react-redux";
+import { ConfirmDelete } from "./ConfirmDelete";
+import { Toaster } from "./Toaster";
 
 export const CollapsableYear = ({ months, year, solds }) => {
   //___________________________________________________ Variables
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [triggerToaster, setTriggerToaster] = useState(null);
+  const [monthToDelete, setMonthToDelete] = useState(null);
   const getSummary = useSelector((state) => state.summary.summary);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [summaryId, setSummaryId] = useState(false);
   const [collapse, setCollapse] = useState(
     new Date().getFullYear() === year ? false : true
   );
@@ -24,17 +29,33 @@ export const CollapsableYear = ({ months, year, solds }) => {
   };
 
   const deleteMonth = (month) => {
-    const summaryId = getSummary.filter(
-      (item) => item.year === year && item.month === month
-    )[0].id;
-
-    return dispatch(deleteSummary(summaryId));
+    setSummaryId(
+      getSummary.filter((item) => item.year === year && item.month === month)[0]
+        .id
+    );
+    setIsDeleting(true);
+    setMonthToDelete(getMonth(month))
   };
-
+  
   //___________________________________________________ Render
 
   return (
     <>
+      {triggerToaster && (
+        <Toaster
+          type={triggerToaster.type}
+          message={triggerToaster.message}
+          setTriggerToaster={setTriggerToaster}
+        />
+      )}
+      {isDeleting && (
+        <ConfirmDelete
+          summaryId={summaryId}
+          setIsDeleting={setIsDeleting}
+          setTriggerToaster={setTriggerToaster}
+          monthToDelete={monthToDelete}
+        />
+      )}
       <div className="collapseDiv" onClick={() => setCollapse(!collapse)}>
         <svg
           width="24"

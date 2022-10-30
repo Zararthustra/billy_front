@@ -77,7 +77,7 @@ export const Toaster = ({ type, message, setTriggerToaster }) => {
       onClick={() => setTriggerToaster(false)}
       style={{
         position: "fixed",
-        zIndex: "2",
+        zIndex: "5",
         height: "auto",
         backdropFilter: "blur(5px)",
         WebkitBackdropFilter: "blur(5px)",
@@ -89,7 +89,7 @@ export const Toaster = ({ type, message, setTriggerToaster }) => {
         margin: "0 1rem",
         display: "flex",
         alignItems: "center",
-        boxShadow: "0 0 50px #ffffff48",
+        boxShadow: "0 0 100px #ffffff48",
         gap: "1rem",
       }}
     >

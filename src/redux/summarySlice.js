@@ -21,8 +21,7 @@ const initialState = {
 export const retrieveSummary = createAsyncThunk(
   "summary/retrieveSummary",
   async () => {
-    const response = await axios
-      .get(URL, authHeader())
+    const response = await axios.get(URL, authHeader());
     const userData = response.data.filter(
       (summary) => summary.user === getLocalStorage("userid") || summary.rec
     );
@@ -49,6 +48,15 @@ export const updateSummary = createAsyncThunk(
       authHeader()
     );
 
+    return response.data;
+  }
+);
+
+export const deleteSummary = createAsyncThunk(
+  "summary/deleteSummary",
+  async (summaryId) => {
+    console.log(summaryId);
+    const response = await axios.delete(URL + "/" + summaryId, authHeader());
     return response.data;
   }
 );
@@ -92,6 +100,20 @@ export const summarySlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(updateSummary.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(deleteSummary.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteSummary.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        console.log(action.meta.arg);
+        state.summary = state.summary.filter(
+          (item) => item.id !== action.meta.arg
+        );
+      })
+      .addCase(deleteSummary.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

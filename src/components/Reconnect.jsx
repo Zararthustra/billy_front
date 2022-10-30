@@ -2,11 +2,15 @@ import { useDispatch } from "react-redux";
 import { refreshTokenUser } from "../redux/userSlice";
 import { getLocalStorage, saveLocalStorage } from "../utils/localStorage";
 import bg from "../assets/background.png";
+import { Toaster } from "./Toaster";
+import { useState } from "react";
+
 export const Reconnect = () => {
   //___________________________________________________ Variables
   const dispatch = useDispatch();
 
   const username = getLocalStorage("username");
+  const [triggerToaster, setTriggerToaster] = useState(null);
 
   //___________________________________________________ Functions
   const logout = () => {
@@ -20,7 +24,11 @@ export const Reconnect = () => {
       })
     )
       .then((user) => {
-        if (user.meta.requestStatus === "rejected") return console.log("401"); //localStorage.clear(); // 401 toaster
+        if (user.meta.requestStatus === "rejected")
+          return setTriggerToaster({
+            type: "error",
+            message: "Une erreur est survenue, veuillez vous déconnecter.",
+          });
         saveLocalStorage("username", username);
         saveLocalStorage("access", user.payload.access);
         saveLocalStorage("refresh", user.payload.refresh);
@@ -32,6 +40,13 @@ export const Reconnect = () => {
 
   return (
     <>
+      {triggerToaster && (
+        <Toaster
+          type={triggerToaster.type}
+          message={triggerToaster.message}
+          setTriggerToaster={setTriggerToaster}
+        />
+      )}
       <div className="editRowPage">
         <div
           className="editRowContainer"

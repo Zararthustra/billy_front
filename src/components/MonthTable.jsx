@@ -133,7 +133,12 @@ export const MonthTable = ({
                                   .toFixed(2)
                                   .toString()
                                   .replace(".", ",")
-                            : catchValue.toLocaleString()}
+                            : catchValue % 1 === 0
+                            ? catchValue.toLocaleString()
+                            : catchValue
+                                .toFixed(2)
+                                .toLocaleString()
+                                .replace(".", ",")}
                         </td>
                       );
                     }
@@ -147,8 +152,13 @@ export const MonthTable = ({
                       return (
                         <td key={indexx} {...cell.getCellProps()}>
                           {incrementedSoldes % 1 !== 0
-                            ? incrementedSoldes.toFixed(2).toLocaleString()
-                            : incrementedSoldes.toLocaleString()}
+                            ? incrementedSoldes
+                                .toFixed(2)
+                                .toLocaleString()
+                                .replace(".", ",")
+                            : incrementedSoldes
+                                .toLocaleString()
+                                .replace(".", ",")}
                         </td>
                       );
                     }

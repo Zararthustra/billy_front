@@ -14,7 +14,7 @@ export const NotFound = () => {
       <Home />
       <Logout />
       <h1>On s'est perdu ?</h1>
-      <button className="primaryButton" onClick={() => navigate("/accueil")}>
+      <button className="primaryButton" onClick={() => navigate("/")}>
         Accueil
       </button>
       <img src={notfoundgif} alt="Travolta gif" />

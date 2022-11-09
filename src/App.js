@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoutes />}>
-          <Route path="/accueil" element={<Summary />} />
+          <Route path="/" element={<Summary />} />
           <Route path="/:year/:month" element={<Month />} />
           <Route path="/recurrences" element={<Recurrences />} />
         </Route>

@@ -12,7 +12,7 @@ export const Home = () => {
   return (
     <>
       <svg
-        onClick={() => navigate("/accueil")}
+        onClick={() => navigate("/")}
         className="homeButton"
         width="30"
         height="30"

@@ -87,13 +87,14 @@ export const MonthTable = ({
         </tr>
         {
           // Loop over the table rows
-          rows.map((row) => {
+          rows.map((row, index) => {
             // Prepare the row for display
             prepareRow(row);
             return (
               // Apply the row props
               <tr
                 {...row.getRowProps()}
+                key={index}
                 onClick={() =>
                   row.original.id !== undefined &&
                   !deletedRows
@@ -113,11 +114,12 @@ export const MonthTable = ({
               >
                 {
                   // Loop over the rows cells
-                  row.cells.map((cell) => {
+                  row.cells.map((cell, indexx) => {
                     if (cell.column.id === "value") {
                       catchValue = cell.value;
                       return (
                         <td
+                          key={indexx}
                           style={{
                             color:
                               catchValue < 0 ? "var(--red)" : "var(--green)",
@@ -125,7 +127,7 @@ export const MonthTable = ({
                           {...cell.getCellProps()}
                         >
                           {catchValue < 0
-                            ? catchValue * -1
+                            ? (catchValue * -1).toString().replace(".", ",")
                             : catchValue.toLocaleString()}
                         </td>
                       );
@@ -138,7 +140,7 @@ export const MonthTable = ({
                       )
                         incrementedSoldes += catchValue;
                       return (
-                        <td {...cell.getCellProps()}>
+                        <td key={indexx} {...cell.getCellProps()}>
                           {incrementedSoldes % 1 !== 0
                             ? parseFloat(
                                 incrementedSoldes.toFixed(2)
@@ -149,7 +151,7 @@ export const MonthTable = ({
                     }
                     return (
                       // Apply the cell props
-                      <td {...cell.getCellProps()}>
+                      <td key={indexx} {...cell.getCellProps()}>
                         {
                           // Render the cell contents
                           cell.render("Cell")

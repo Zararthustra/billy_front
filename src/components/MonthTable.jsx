@@ -127,7 +127,12 @@ export const MonthTable = ({
                           {...cell.getCellProps()}
                         >
                           {catchValue < 0
-                            ? (catchValue * -1).toString().replace(".", ",")
+                            ? catchValue % 1 === 0
+                              ? (catchValue * -1).toString().replace(".", ",")
+                              : (catchValue * -1)
+                                  .toFixed(2)
+                                  .toString()
+                                  .replace(".", ",")
                             : catchValue.toLocaleString()}
                         </td>
                       );
@@ -142,9 +147,7 @@ export const MonthTable = ({
                       return (
                         <td key={indexx} {...cell.getCellProps()}>
                           {incrementedSoldes % 1 !== 0
-                            ? parseFloat(
-                                incrementedSoldes.toFixed(2)
-                              ).toLocaleString()
+                            ? incrementedSoldes.toFixed(2).toLocaleString()
                             : incrementedSoldes.toLocaleString()}
                         </td>
                       );

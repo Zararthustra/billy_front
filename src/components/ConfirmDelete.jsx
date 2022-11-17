@@ -23,6 +23,7 @@ export const ConfirmDelete = ({
             type: "error",
             message: "Une erreur est survenue.",
           });
+        window.location.reload();
         return setTriggerToaster({
           type: "success",
           message: "Mois supprimé avec succès !",

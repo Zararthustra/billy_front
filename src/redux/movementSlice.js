@@ -22,9 +22,7 @@ export const retrieveMovements = createAsyncThunk(
   "movements/retrieveMovements",
   async () => {
     const response = await axios.get(URL, authHeader());
-    const userData = response.data.filter(
-      (movement) => movement.user === getLocalStorage("userid")
-    );
+    const userData = response.data
     return userData;
   }
 );

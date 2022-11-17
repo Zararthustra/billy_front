@@ -22,9 +22,7 @@ export const retrieveSummary = createAsyncThunk(
   "summary/retrieveSummary",
   async () => {
     const response = await axios.get(URL, authHeader());
-    const userData = response.data.filter(
-      (summary) => summary.user === getLocalStorage("userid") || summary.rec
-    );
+    const userData = response.data
     return userData;
   }
 );
